@@ -92,7 +92,7 @@ public class VisitPlanController {
                     required = true),
     })
     @GetMapping(value = "/list")
-    public CommonResult<CommonPage<VisitPlanDTO>> searchVisitPlan(@RequestParam(required = false) Long hospitalId,
+    public CommonResult<CommonPage<VisitPlanDTO>> searchVisitPlan(@RequestParam(required = false) String hospitalId,
                                                                   @RequestParam(required = false) Long specialId,
                                                                   @RequestParam(required = false) Long outpatientId,
                                                                   @RequestParam String day,
@@ -157,11 +157,11 @@ public class VisitPlanController {
 
     @ApiOperation(value = "根据医生编号、日期，获取出诊信息", notes = "传入 医生编号、日期")
     @GetMapping(value = "/doctor/date")
-    public CommonResult<List<VisitPlanResiduesDTO>> searchVisitPlanByDoctorAndDate(@RequestParam Long hospitalId,
+    public CommonResult<List<VisitPlanResiduesDTO>> searchVisitPlanByDoctorAndDate(@RequestParam String hospitalId,
                                                                                    @RequestParam Long doctorId,
                                                                                    @RequestParam String date) {
 
-        if (!sysDeptService.checkDeptExistUser(doctorId)) {
+        if (!sysDeptService.checkDeptExistUser(hospitalId)) {
             return CommonResult.validateFailed("不存在，该科室编号！");
         }
 
