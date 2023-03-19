@@ -11,6 +11,8 @@ import com.aidex.system.domain.SysNotice;
 import com.aidex.system.service.SysNoticeService;
 import com.aidex.system.service.SysNoticeUserReadService;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -24,7 +26,9 @@ import javax.servlet.http.HttpServletResponse;
  * 
  * @author ruoyi
  */
+@Api(value = "公告模板", tags = "公告信息操作处理接口")
 @RestController
+@CrossOrigin
 @RequestMapping("/system/notice")
 public class SysNoticeController extends BaseController
 {
@@ -36,6 +40,7 @@ public class SysNoticeController extends BaseController
     /**
      * 获取通知公告列表
      */
+    @ApiOperation(value = "获取通知公告列表")
     @PreAuthorize("@ss.hasPermi('system:notice:list')")
     @GetMapping("/page")
     public R<PageInfo> list(SysNotice notice, HttpServletRequest request, HttpServletResponse response)
@@ -47,6 +52,7 @@ public class SysNoticeController extends BaseController
     /**
      * 根据通知公告编号获取详细信息
      */
+    @ApiOperation(value = "根据通知公告编号获取详细信息")
     @PreAuthorize("@ss.hasPermi('system:notice:query')")
     @GetMapping(value = "/{noticeId}")
     public R<SysNotice> getInfo(@PathVariable String noticeId)
@@ -57,6 +63,7 @@ public class SysNoticeController extends BaseController
     /**
      * 新增通知公告
      */
+    @ApiOperation(value = "新增通知公告")
     @PreAuthorize("@ss.hasPermi('system:notice:add')")
     @Log(title = "通知公告", businessType = BusinessType.INSERT)
     @PostMapping
@@ -69,6 +76,7 @@ public class SysNoticeController extends BaseController
     /**
      * 删除通知公告
      */
+    @ApiOperation(value = "删除通知公告")
     @PreAuthorize("@ss.hasPermi('system:notice:remove')")
     @Log(title = "通知公告", businessType = BusinessType.DELETE)
     @DeleteMapping("/{noticeIds}")
@@ -80,6 +88,7 @@ public class SysNoticeController extends BaseController
     /**
      * 根据通知公告编号获取详细信息
      */
+    @ApiOperation(value = "根据通知公告编号获取详细信息")
     @GetMapping(value = "getNoticeView/{noticeId}")
     public R<SysNotice> getNoticeView(@PathVariable String noticeId)
     {
@@ -91,6 +100,7 @@ public class SysNoticeController extends BaseController
     /**
      * 获取个人公告阅读列表
      */
+    @ApiOperation(value = "获取个人公告阅读列表")
     @GetMapping("listNoticeByUser/page")
     public R<PageInfo> listNoticeByUser(SysNotice notice, HttpServletRequest request, HttpServletResponse response)
     {
@@ -102,6 +112,7 @@ public class SysNoticeController extends BaseController
     /**
      * 将通知公告标记为已读
      */
+    @ApiOperation(value = "将通知公告标记为已读")
     @Log(title = "公告标记为已读", businessType = BusinessType.UPDATE)
     @PutMapping("updateNoticeToRead/{noticeIds}")
     public R updateNoticeToRead(@PathVariable String[] noticeIds)
