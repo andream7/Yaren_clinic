@@ -11,6 +11,8 @@ import com.aidex.common.enums.BusinessType;
 import com.aidex.common.utils.StringUtils;
 import com.aidex.system.service.SysDeptService;
 import com.alibaba.fastjson2.JSONObject;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -22,11 +24,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 部门信息管理
+ * 科室信息管理
  * @author ruoyi
  */
 
+@Api(value = "科室模块", tags = "科室信息接口")
 @RestController
+@CrossOrigin
 @RequestMapping("/system/dept")
 public class SysDeptController extends BaseController {
 
@@ -34,11 +38,12 @@ public class SysDeptController extends BaseController {
     private SysDeptService sysDeptService;
 
     /**
-     * 根据层级展开部门树表格
+     * 根据层级展开科室树表格
      * @param level 展开层级
      * @param id 起始展开ID
      * @return com.aidex.common.core.domain.R
      */
+    @ApiOperation(value = "根据层级展开科室树表格")
     @PreAuthorize("@ss.hasPermi('system:dept:list')")
     @GetMapping("/list/{level}/{id}")
     public R list(@PathVariable("level") @NotEmpty int level, @PathVariable("id") String id) {
@@ -53,8 +58,9 @@ public class SysDeptController extends BaseController {
         return R.data(depts);
     }
     /**
-     * 部门树表格检索
+     * 科室树表格检索
      */
+    @ApiOperation(value = "棵树树表格检索")
     @PreAuthorize("@ss.hasPermi('system:dept:list')")
     @GetMapping("/searchDeptList")
     public R searchDeptList (SysDept sysDept)
@@ -63,10 +69,11 @@ public class SysDeptController extends BaseController {
         return R.data(depts);
     }
     /**
-     * 根据ID获取部门信息
+     * 根据ID获取科室信息
      * @param id
      * @return com.aidex.common.core.domain.R
      */
+    @ApiOperation(value = "根据ID获取科室信息")
     @PreAuthorize("@ss.hasPermi('system:dept:query')")
     @GetMapping(value = "/{id}")
     public R detail(@NotBlank @PathVariable String id) {
@@ -84,6 +91,7 @@ public class SysDeptController extends BaseController {
      * @param parentId
      * @return com.aidex.common.core.domain.R
      */
+    @ApiOperation(value = "获取当前父节点下最大编号")
     @PreAuthorize("@ss.hasPermi('system:post:query')")
     @Log(title = "岗位管理", businessType = BusinessType.SELECT)
     @GetMapping("/findMaxSort/{parentId}")
@@ -94,16 +102,17 @@ public class SysDeptController extends BaseController {
     }
 
     /**
-     * 校验同一个父部门下是否存在同名的部门
-     * @param deptName 部门名称
-     * @param parentId 父部门ID
+     * 校验同一个父科室下是否存在同名的科室
+     * @param deptName 科室名称
+     * @param parentId 父科室ID
      * @param id
      * @return com.aidex.common.core.domain.R
      */
+    @ApiOperation(value = "校验同一个父科室下是否存在同名的科室")
     @PreAuthorize("@ss.hasPermi('system:post:edit')")
-    @Log(title = "部门管理", businessType = BusinessType.CHECK)
+    @Log(title = "科室管理", businessType = BusinessType.CHECK)
     @GetMapping(value = {"/validateDeptNameUnique/{deptName}/{parentId}/{id}", "/validateDeptNameUnique/{deptName}/{parentId}"})
-    public R validateDeptNameUnique(@NotBlank(message = "部门名称不允许为空") @PathVariable("deptName") String deptName, @NotBlank(message = "ID不允许为空")  @PathVariable("parentId") String parentId, @PathVariable(value = "id", required = false) String id) {
+    public R validateDeptNameUnique(@NotBlank(message = "科室名称不允许为空") @PathVariable("deptName") String deptName, @NotBlank(message = "ID不允许为空")  @PathVariable("parentId") String parentId, @PathVariable(value = "id", required = false) String id) {
         SysDept sysDept = new SysDept();
         sysDept.setParentId(parentId);
         sysDept.setDeptName(deptName);
@@ -113,12 +122,13 @@ public class SysDeptController extends BaseController {
     }
 
     /**
-     * 新增部门
+     * 新增科室
      * @param dept
      * @return com.aidex.common.core.domain.R
      */
+    @ApiOperation(value = "新增科室")
     @PreAuthorize("@ss.hasPermi('system:dept:add')")
-    @Log(title = "部门管理", businessType = BusinessType.INSERT)
+    @Log(title = "科室管理", businessType = BusinessType.INSERT)
     @PostMapping
     public R add(@RequestBody @Validated  SysDept dept) {
         sysDeptService.save(dept);
@@ -126,12 +136,13 @@ public class SysDeptController extends BaseController {
     }
 
     /**
-     * 修改部门
+     * 修改科室
      * @param dept
      * @return
      */
+    @ApiOperation(value = "修改科室")
     @PreAuthorize("@ss.hasPermi('system:dept:edit')")
-    @Log(title = "部门管理", businessType = BusinessType.UPDATE)
+    @Log(title = "科室管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public R edit(@RequestBody @Validated  SysDept dept) {
         sysDeptService.save(dept);
@@ -139,12 +150,13 @@ public class SysDeptController extends BaseController {
     }
 
     /**
-     * 删除部门
+     * 删除科室
      * @param id
      * @return
      */
+    @ApiOperation(value = "删除科室")
     @PreAuthorize("@ss.hasPermi('system:dept:remove')")
-    @Log(title = "部门管理", businessType = BusinessType.DELETE)
+    @Log(title = "科室管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     public R remove(@PathVariable  String id) {
         SysDept sysDept = new SysDept();
@@ -153,11 +165,12 @@ public class SysDeptController extends BaseController {
     }
 
     /**
-     * 部门选择树
+     * 科室选择树
      * @param level 初始展开层级
      * @param id 展开节点ID
      * @return
      */
+    @ApiOperation(value = "科室选择树")
     @PreAuthorize("@ss.hasPermi('system:dept:list')")
     @GetMapping("/listTree/{level}/{id}")
     public R listTree(@NotBlank @PathVariable("level") int level, @PathVariable("id") String id) {
@@ -172,8 +185,9 @@ public class SysDeptController extends BaseController {
         return R.data(depts);
     }
     /**
-     * 部门树检索
+     * 科室树检索
      */
+    @ApiOperation(value = "科室树检索")
     @PreAuthorize("@ss.hasPermi('system:dept:list')")
     @GetMapping("/search")
     public R search (SysDept sysDept)
@@ -183,12 +197,13 @@ public class SysDeptController extends BaseController {
     }
 
     /**
-     * 部门选择树
+     * 科室选择树
      * @param level
      * @param id
      * @param excludeId 排除节点
      * @return
      */
+    @ApiOperation(value = "科室选择树")
     @PreAuthorize("@ss.hasPermi('system:dept:list')")
     @GetMapping(value = {"/listTreeExcludeChild/{level}/{id}/{excludeId}"})
     public R listTreeExcludeChild(@NotBlank @PathVariable("level") int level, @PathVariable("id") String id, @PathVariable(value = "excludeId",required = false) String excludeId) {
@@ -204,8 +219,9 @@ public class SysDeptController extends BaseController {
     }
 
     /**
-     * 加载对应角色部门列表树
+     * 加载对应角色科室列表树
      */
+    @ApiOperation(value = "加载对应角色科室列表树")
     @GetMapping(value = "/roleDeptTreeselect/{roleId}")
     public R roleDeptTreeselect(@PathVariable("roleId") String roleId) {
         List<SysDept> depts = sysDeptService.findList(new SysDept());
@@ -216,11 +232,12 @@ public class SysDeptController extends BaseController {
     }
 
     /**
-     * 选人页面按部门加载
+     * 选人页面按科室加载
      * @param level 初始展开层级
      * @param id 展开节点ID
      * @return
      */
+    @ApiOperation(value = "选人页面按科室加载")
     @GetMapping("/userSelectList/{level}/{id}")
     public R userSelectList(@NotBlank @PathVariable("level") int level, @PathVariable("id") String id) {
         if (level == 0) {
@@ -234,8 +251,9 @@ public class SysDeptController extends BaseController {
         return R.data(depts);
     }
     /**
-     * 按部门树检索用户
+     * 按科室树检索用户
      */
+    @ApiOperation(value = "按科室树检索医生")
     @GetMapping("/searchDeptUserList")
     public R searchDeptUserList (SysDept sysDept)
     {
@@ -248,6 +266,7 @@ public class SysDeptController extends BaseController {
      * 通用选人页面根据用户ID
      * @return
      */
+    @ApiOperation(value = "通用选人页面根据医生ID")
     @PostMapping(value = { "/getDeptInfoByIds"})
     public R getDeptInfoByIds(@Validated @RequestBody JSONObject deptIdsObj)
     {
@@ -258,8 +277,9 @@ public class SysDeptController extends BaseController {
     /**
      * 刷新缓存
      */
+    @ApiOperation(value = "刷新缓存")
     @PreAuthorize("@ss.hasPermi('system:config:remove')")
-    @Log(title = "部门管理", businessType = BusinessType.CLEAN)
+    @Log(title = "科室管理", businessType = BusinessType.CLEAN)
     @DeleteMapping("/refreshCache")
     public R refreshCache() {
         sysDeptService.refreshCache();
