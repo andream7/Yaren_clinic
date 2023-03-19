@@ -17,12 +17,11 @@ import com.aidex.system.domain.SysPortalConfig;
 import com.aidex.system.service.SysMenuService;
 import com.aidex.system.service.SysNoticeService;
 import com.aidex.system.service.SysPortalConfigService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +33,8 @@ import java.util.Set;
  *
  * @author ruoyi
  */
+@Api(value = "医生登录验证模块", tags = "医生登录验证接口")
+@CrossOrigin
 @RestController
 public class SysLoginController {
 
@@ -64,6 +65,7 @@ public class SysLoginController {
      * @param loginBody 登录信息
      * @return 结果
      */
+    @ApiOperation(value = "医生登录方法")
     @PostMapping("/login")
     public AjaxResult login(@RequestBody LoginBody loginBody) {
         AjaxResult ajax = AjaxResult.success();
@@ -79,6 +81,7 @@ public class SysLoginController {
      *
      * @return 用户信息
      */
+    @ApiOperation(value = "获取医生信息")
     @GetMapping("getInfo")
     public AjaxResult getInfo() {
         SysUser user = SecurityUtils.getLoginUser().getUser();
@@ -114,6 +117,7 @@ public class SysLoginController {
      *
      * @return 路由信息
      */
+    @ApiOperation(value = "获取路由信息")
     @GetMapping("getRouters")
     public AjaxResult getRouters() {
         // 用户信息
