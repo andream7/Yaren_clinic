@@ -9,6 +9,7 @@ import com.aidex.common.utils.poi.ExcelUtil;
 import com.aidex.system.domain.SysNoticeUserRead;
 import com.aidex.system.service.SysNoticeUserReadService;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * 通知公告用户阅读Controller
+ * 通知公告用户阅读
  * @author aidex
  * @email aidex@qq.com
  * @date 2021-07-02
@@ -33,6 +34,7 @@ public class SysNoticeUserReadController extends BaseController
     /**
      * 查询通知公告用户阅读列表
      */
+    @ApiOperation(value = "查询通知公告用户阅读列表")
     @GetMapping("/list")
     public R<PageInfo> list(SysNoticeUserRead sysNoticeUserRead, HttpServletRequest request, HttpServletResponse response)
     {
@@ -43,6 +45,7 @@ public class SysNoticeUserReadController extends BaseController
     /**
      * 获取通知公告用户阅读详细信息
      */
+    @ApiOperation(value = "获取通知公告用户阅读详细信息")
     @GetMapping(value = "/{id}")
     public R<SysNoticeUserRead> detail(@PathVariable("id") String id)
     {
@@ -52,6 +55,7 @@ public class SysNoticeUserReadController extends BaseController
     /**
      * 新增通知公告用户阅读
      */
+    @ApiOperation(value = "新增通知公告用户阅读")
     @Log(title = "通知公告用户阅读", businessType = BusinessType.INSERT)
     @PostMapping
     public R add(@RequestBody @Validated  SysNoticeUserRead sysNoticeUserRead)
@@ -62,6 +66,7 @@ public class SysNoticeUserReadController extends BaseController
     /**
      * 修改通知公告用户阅读
      */
+    @ApiOperation(value = "修改通知公告用户阅读")
     @Log(title = "通知公告用户阅读", businessType = BusinessType.UPDATE)
     @PutMapping
     public R edit(@RequestBody @Validated SysNoticeUserRead sysNoticeUserRead)
@@ -73,6 +78,7 @@ public class SysNoticeUserReadController extends BaseController
     /**
      * 删除通知公告用户阅读
      */
+    @ApiOperation(value = "删除通知公告用户阅读")
     @Log(title = "通知公告用户阅读", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R remove(@PathVariable String[] ids)
@@ -84,6 +90,7 @@ public class SysNoticeUserReadController extends BaseController
     /**
      * 导出通知公告用户阅读列表
      */
+    @ApiOperation(value = "导出通知公告用户阅读列表")
     @Log(title = "通知公告用户阅读", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public R export(SysNoticeUserRead sysNoticeUserRead)
