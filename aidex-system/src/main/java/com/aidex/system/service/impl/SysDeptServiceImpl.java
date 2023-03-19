@@ -3,6 +3,7 @@ package com.aidex.system.service.impl;
 import com.aidex.common.utils.SecurityUtils;
 import com.aidex.common.utils.spring.SpringUtils;
 import com.aidex.framework.cache.DeptUtils;
+import com.aidex.system.mapper.SysRoleMapper;
 import com.alibaba.fastjson2.JSONObject;
 import com.aidex.common.constant.Constants;
 import com.aidex.common.constant.UserConstants;
@@ -19,12 +20,12 @@ import com.aidex.common.utils.StringUtils;
 import com.aidex.common.utils.uuid.IdUtils;
 import com.aidex.system.common.SysErrorCode;
 import com.aidex.system.mapper.SysDeptMapper;
-import com.aidex.system.mapper.SysRoleMapper;
 import com.aidex.system.service.SysDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -35,8 +36,8 @@ import java.util.*;
 @Service
 public class SysDeptServiceImpl extends BaseTreeServiceImpl<SysDeptMapper, SysDept> implements SysDeptService {
 
-    @Autowired
-    private SysRoleMapper roleMapper;
+    @Resource
+    private SysRoleMapper sysRoleMapper;
 
     private static final int ID_LIMIT = 500;
     /**
@@ -237,7 +238,7 @@ public class SysDeptServiceImpl extends BaseTreeServiceImpl<SysDeptMapper, SysDe
      */
     @Override
     public List<Integer> selectDeptListByRoleId(String roleId) {
-        SysRole role = roleMapper.get(roleId);
+        SysRole role = sysRoleMapper.get(roleId);
         return mapper.selectDeptListByRoleId(roleId, role.isDeptCheckStrictly());
     }
 
