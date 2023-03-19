@@ -175,7 +175,7 @@ public class VisitPlanExample {
             return (Criteria) this;
         }
 
-        public Criteria andHospitalIdEqualTo(Long value) {
+        public Criteria andHospitalIdEqualTo(String value) {
             addCriterion("hospital_id =", value, "hospitalId");
             return (Criteria) this;
         }
