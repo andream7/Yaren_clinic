@@ -6,10 +6,11 @@ import com.aidex.common.core.domain.R;
 import com.aidex.common.core.page.PageDomain;
 import com.aidex.common.enums.BusinessType;
 import com.aidex.common.utils.poi.ExcelUtil;
-import com.aidex.generator.domain.GenConfigTemplate;
 import com.aidex.system.domain.SysPost;
 import com.aidex.system.service.SysPostService;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -26,6 +27,7 @@ import java.util.Map;
  * @author aidex
  * @email aidex@qq.com
  */
+@Api(value = "岗位管理", tags = "岗位管理操作处理接口")
 @RestController
 @RequestMapping("/system/post")
 public class SysPostController extends BaseController {
@@ -36,6 +38,7 @@ public class SysPostController extends BaseController {
     /**
      * 获取岗位列表
      */
+    @ApiOperation(value = "获取岗位列表")
     @PreAuthorize("@ss.hasPermi('system:post:list')")
     @GetMapping("/page")
     public R<PageInfo> page(SysPost post, HttpServletRequest request, HttpServletResponse response) {
@@ -46,6 +49,7 @@ public class SysPostController extends BaseController {
     /**
      * 根据ID获取详细信息
      */
+    @ApiOperation(value = "根据ID获取详细信息")
     @PreAuthorize("@ss.hasPermi('system:post:query')")
     @GetMapping(value = "/{id}")
     public R<SysPost> detail(@PathVariable String id) {
@@ -55,6 +59,7 @@ public class SysPostController extends BaseController {
     /**
      * 获取最大排序号
      */
+    @ApiOperation(value = "获取最大排序号")
     @PreAuthorize("@ss.hasPermi('system:post:query')")
     @Log(title = "岗位管理", businessType = BusinessType.SELECT)
     @GetMapping("/findMaxSort")
@@ -66,6 +71,7 @@ public class SysPostController extends BaseController {
     /**
      * 新增岗位
      */
+    @ApiOperation(value = "新增岗位")
     @PreAuthorize("@ss.hasPermi('system:post:add')")
     @Log(title = "岗位管理", businessType = BusinessType.INSERT)
     @PostMapping
@@ -76,6 +82,7 @@ public class SysPostController extends BaseController {
     /**
      * 修改岗位
      */
+    @ApiOperation(value = "修改岗位")
     @PreAuthorize("@ss.hasPermi('system:post:edit')")
     @Log(title = "岗位管理", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -87,6 +94,7 @@ public class SysPostController extends BaseController {
     /**
      * 校验岗位名称是否存在
      */
+    @ApiOperation(value = "校验岗位名称是否存在")
     @PreAuthorize("@ss.hasPermi('system:post:edit')")
     @Log(title = "岗位管理", businessType = BusinessType.CHECK)
     @GetMapping("/checkPostNameUnique")
@@ -108,6 +116,7 @@ public class SysPostController extends BaseController {
      * @param ids
      * @return R
      */
+    @ApiOperation(value = "删除岗位")
     @PreAuthorize("@ss.hasPermi('system:post:remove')")
     @Log(title = "岗位管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
@@ -121,6 +130,7 @@ public class SysPostController extends BaseController {
      * @param post
      * @return com.aidex.common.core.domain.AjaxResult
      */
+    @ApiOperation(value = "方法描述")
     @Log(title = "岗位管理", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:post:export')")
     @GetMapping("/export")
@@ -136,6 +146,7 @@ public class SysPostController extends BaseController {
      * @param
      * @return R
      */
+    @ApiOperation(value = "获取岗位列表")
     @Log(title = "岗位管理", businessType = BusinessType.SELECT)
     @PreAuthorize("@ss.hasPermi('system:post:list')")
     @GetMapping("/list")
@@ -147,6 +158,7 @@ public class SysPostController extends BaseController {
     /**
      * 校验参数键名是否存在
      */
+    @ApiOperation(value = "校验参数键名是否存在")
     @PreAuthorize("@ss.hasPermi('system:post:edit')")
     @Log(title = "岗位管理", businessType = BusinessType.CHECK)
     @GetMapping("/checkPostCodeUnique")
