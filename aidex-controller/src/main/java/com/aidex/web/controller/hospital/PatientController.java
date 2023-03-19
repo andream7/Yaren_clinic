@@ -1,4 +1,4 @@
-package com.aidex.web.controller.system;
+package com.aidex.web.controller.hospital;
 
 import com.aidex.common.annotation.Log;
 import com.aidex.common.core.domain.api.CommonPage;
