@@ -17,6 +17,8 @@ import com.aidex.framework.web.service.TokenService;
 import com.aidex.system.service.ISysRoleService;
 import com.aidex.system.service.ISysUserService;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -33,7 +35,9 @@ import java.util.Map;
  *
  * @author ruoyi
  */
+@Api(value = "角色模块", tags = "角色信息接口")
 @RestController
+@CrossOrigin
 @RequestMapping("/system/role")
 public class SysRoleController extends BaseController
 {
@@ -49,6 +53,7 @@ public class SysRoleController extends BaseController
     @Autowired
     private ISysUserService userService;
 
+    @ApiOperation(value = "角色列表")
     @PreAuthorize("@ss.hasPermi('system:role:list')")
     @GetMapping("/list")
     public R<PageInfo> page(SysRole role, HttpServletRequest request, HttpServletResponse response)
@@ -57,6 +62,7 @@ public class SysRoleController extends BaseController
         return R.data(roleService.findPage(role));
     }
 
+    @ApiOperation(value = "导出角色数据")
     @Log(title = "角色管理", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:role:export')")
     @GetMapping("/export")
@@ -70,6 +76,7 @@ public class SysRoleController extends BaseController
     /**
      * 根据角色编号获取详细信息
      */
+    @ApiOperation(value = "根据角色编号获取详细信息")
     @PreAuthorize("@ss.hasPermi('system:role:query')")
     @GetMapping(value = "/{roleId}")
     public AjaxResult getInfo(@PathVariable String roleId)
