@@ -176,7 +176,7 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
      * @return 医生出诊信息
      */
     @Override
-    public List<VisitPlanResiduesDTO> getDoctorPlanByDate(Long hospitalId, Long doctorId, Date date) {
+    public List<VisitPlanResiduesDTO> getDoctorPlanByDate(String  hospitalId, Long doctorId, Date date) {
 
         // 获取当天出诊计划
         VisitPlanExample example = new VisitPlanExample();
@@ -210,7 +210,7 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
      * @return 出诊列表
      */
     @Override
-    public List<VisitPlanDTO> list(Long hospitalId, Long specialId, Long outpatientId, Long doctorId, Date day,
+    public List<VisitPlanDTO> list(String hospitalId, Long specialId, Long outpatientId, Long doctorId, Date day,
                                    Integer pageNum, Integer pageSize) {
 
         PageHelper.startPage(pageNum, pageSize);
