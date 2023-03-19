@@ -12,6 +12,8 @@ import com.aidex.system.domain.SysDictData;
 import com.aidex.system.service.SysDictDataService;
 import com.aidex.system.service.SysDictTypeService;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -28,7 +30,9 @@ import java.util.Map;
  *
  * @author ruoyi
  */
+@Api(value = "数据字典模块", tags = "数据字典信息接口")
 @RestController
+@CrossOrigin
 @RequestMapping("/system/dict/data")
 public class SysDictDataController extends BaseController {
 
@@ -38,6 +42,7 @@ public class SysDictDataController extends BaseController {
     @Autowired
     private SysDictTypeService dictTypeService;
 
+    @ApiOperation(value = "数据字典列表")
     @PreAuthorize("@ss.hasPermi('system:dict:list')")
     @GetMapping("/page")
     public R<PageInfo> list(SysDictData dictData, HttpServletRequest request, HttpServletResponse response) {
@@ -45,6 +50,7 @@ public class SysDictDataController extends BaseController {
         return R.data(dictDataService.findPage(dictData));
     }
 
+    @ApiOperation(value = "导出数据字典")
     @Log(title = "字典数据", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:dict:export')")
     @GetMapping("/export")
@@ -57,6 +63,7 @@ public class SysDictDataController extends BaseController {
     /**
      * 查询字典数据详细
      */
+    @ApiOperation(value = "查询字典数据详细")
     @PreAuthorize("@ss.hasPermi('system:dict:query')")
     @GetMapping(value = "/{id}")
     public R<SysDictData> getInfo(@PathVariable String id) {
@@ -66,14 +73,16 @@ public class SysDictDataController extends BaseController {
     /**
      * 根据字典类型查询字典数据信息
      */
+    @ApiOperation(value = "根据字典类型查询字典数据信息")
     @GetMapping(value = "/type/{dictType}")
     public R<List<SysDictData>> dictType(@PathVariable String dictType) {
         return R.data(DictUtils.getDictList(dictType));
     }
 
     /**
-     * 根据字典类型查询字典数据信息
+     * 根据字典类型查询全部字典数据信息
      */
+    @ApiOperation(value = "根据字典类型查询全部字典数据信息")
     @GetMapping(value = "/all/type/{dictType}")
     public R<List<SysDictData>> allDictType(@PathVariable String dictType) {
         return R.data(DictUtils.getAllDictList(dictType));
@@ -83,6 +92,7 @@ public class SysDictDataController extends BaseController {
     /**
      * 新增字典类型
      */
+    @ApiOperation(value = "新增字典类型")
     @PreAuthorize("@ss.hasPermi('system:dict:add')")
     @Log(title = "字典类型", businessType = BusinessType.INSERT)
     @PostMapping
@@ -94,6 +104,7 @@ public class SysDictDataController extends BaseController {
     /**
      * 删除字典类型
      */
+    @ApiOperation(value = "新增字典类型")
     @PreAuthorize("@ss.hasPermi('system:dict:remove')")
     @Log(title = "字典类型", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
@@ -105,6 +116,7 @@ public class SysDictDataController extends BaseController {
     /**
      * 校验数据字典值是否存在
      */
+    @ApiOperation(value = "校验数据字典值是否存在")
     @PreAuthorize("@ss.hasPermi('system:dict:edit')")
     @Log(title = "字典类型", businessType = BusinessType.CHECK)
     @GetMapping("/checkDictDataValueUnique")
@@ -122,6 +134,7 @@ public class SysDictDataController extends BaseController {
     /**
      * 获取最大排序号
      */
+    @ApiOperation(value = "获取最大排序号")
     @PreAuthorize("@ss.hasPermi('system:post:query')")
     @Log(title = "字典类型", businessType = BusinessType.SELECT)
     @GetMapping("/findMaxSort/{dictType}")
