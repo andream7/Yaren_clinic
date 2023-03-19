@@ -47,7 +47,7 @@ public class PatientController {
     @ApiImplicitParam(name = "id", value = "患者编号", paramType = "path", dataType = "Long",
             required = true)
     @PreAuthorize("@ss.hasPermi('system:user:query')")
-    @GetMapping(value = {"/info/{id}"})
+    @GetMapping(value = {"/{id}"})
     public CommonResult<PatientBasicInfo> getInfo(@PathVariable Long id) {
 
         return CommonResult.success(patientService.getById(id));
@@ -61,7 +61,7 @@ public class PatientController {
     @Log(title = "患者管理", businessType = BusinessType.UPDATE)
     @ApiImplicitParam(name = "id", value = "患者编号", paramType = "path", dataType = "Long",
             required = true)
-    @PutMapping(value = "/info/{id}")
+    @PutMapping(value = "/{id}")
     public CommonResult updateInfo(@PathVariable Long id, @RequestBody PatientBasicInfo param) {
 
         if (!patientService.count(id)) {
@@ -80,7 +80,7 @@ public class PatientController {
     @ApiOperation(value = "删除用户信息", notes = "传入 用户编号")
     @ApiImplicitParam(name = "id", value = "用户编号", paramType = "path", dataType = "Long",
             required = true)
-    @DeleteMapping(value = "/info/{id}")
+    @DeleteMapping(value = "/{id}")
     public CommonResult deleteBasicInfo(@PathVariable Long id) {
         if (!patientService.count(id)) {
             return CommonResult.validateFailed("不存在，该用户编号！");
