@@ -77,4 +77,6 @@ public interface SysUserMapper extends BaseMapper<SysUser>
      * @return
      */
     public List<SysUser> findRoleUserList(SysUser sysUser);
+
+    long countById(Long id);
 }
