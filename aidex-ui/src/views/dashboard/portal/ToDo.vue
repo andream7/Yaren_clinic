@@ -1,147 +1,147 @@
 <template style="background:#f5f6fa;">
   <div class="typical-home" ref="portaletDiv">
     <a-row :gutter="[24,24]" class="module-list">
-      <a-col :span="8">
-        <div class="module-in module-in01">
-          <a-page-header :ghost="false" title="技术选型">
-            <template slot="extra">
-              <a-icon type="more" />
-            </template>
-          </a-page-header>
-          <a-row :gutter="[24,24]">
-            <a-col :span="12">
-              <div class="technology">
-                <a-list size="small" :split="false" :data-source="consoleTech">
-                  <a-list-item slot="renderItem" slot-scope="item">
-                    {{ item }}
-                  </a-list-item>
-                  <div slot="header">
-                    后端
-                  </div>
-                </a-list>
-              </div>
-            </a-col>
-            <a-col :span="12">
-              <div class="technology">
-                <a-list size="small" :split="false" :data-source="frontTech" >
-                  <a-list-item slot="renderItem" slot-scope="item" >
-                    {{ item }}
-                  </a-list-item>
-                  <div slot="header">
-                    前端
-                  </div>
-                </a-list>
-              </div>
-            </a-col>
-          </a-row>
-        </div>
-      </a-col>
-      <a-col :span="8">
-        <div class="module-in module-in01 ">
-          <a-page-header :ghost="false" title="联系我们">
-            <template slot="extra">
-              <a-icon type="more" />
-            </template>
-          </a-page-header>
-          <p>
-            <a-alert message="专业UI设计（5年+）+VUE前端功能开发（3年+）" type="info" show-icon />
-          </p>
-          <a-list item-layout="horizontal" :data-source="detaildata" class="list-detail">
-            <a-list-item class="module-text">
-              <a-list-item-meta>
-                <template slot="description">
-                  <span>【1】</span>
-                  <span>接AiDex Sharp系列架构的定制服务</span>
-                </template>
-              </a-list-item-meta>
-            </a-list-item>
-            <a-list-item class="module-text">
-              <a-list-item-meta>
-                <template slot="description">
-                  <span>【2】</span>
-                  <span >接3个月以内工期的vue、springboot、springcloud、app、小程序等软件定制服务</span>
-                </template>
-              </a-list-item-meta>
-            </a-list-item>
-            <a-list-item class="module-text">
-              <a-list-item-meta>
-                <template slot="description">
-                  <span>【3】</span>
-                  <span>UI原型页面设计及切图服务</span>
-                </template>
-              </a-list-item-meta>
-            </a-list-item>
-            <a-list-item class="module-text">
-              <a-list-item-meta>
-                <template slot="description">
-                  <span>【4】</span>
-                  <span>有意向请联系唯一指定联系人：皮皮大刺猬（右侧扫码）</span>
-                </template>
-              </a-list-item-meta>
-            </a-list-item>
-          </a-list>
-        </div>
-      </a-col>
-      <!-- 个人信息 -->
-      <a-col :span="8">
-        <div class="module-in module-in07" style="height: 370px;">
-          <a-page-header :ghost="false" title="关于我">
-            <template slot="extra">
-              <a-icon type="more" />
-            </template>
-          </a-page-header>
-          <a-row>
-            <a-col>
-              <a-col class="name">
-                <span>皮皮大刺猬</span>
-                <a-icon type="form" @click="compileshowModal" />
-                <a-modal v-model="compile" title="Basic Modal" @ok="compilehandleOk" centered>
-                  <p>Some contents...</p>
-                  <p>Some contents...</p>
-                  <p>Some contents...</p>
-                </a-modal>
-              </a-col>
-              <a-col>
-                <span>QQ号：</span>
-                <span>1125373330</span>
-              </a-col>
-              <a-col>
-                <span>QQ群：</span>
-                <span>208511180</span>
-              </a-col>
-              <a-col>
-                <span>微信号：</span>
-                <span>big-hebgehog</span>
-              </a-col>
-              <a-col>
-                <span>我的特长：</span>
-                <span>专业UI设计（5年+）+VUE前端功能开发（3年+）</span>
-              </a-col>
-              <a-col>
-                <span>项目：</span>
-                <span><a style="color: red;" @click="goTarget('https://gitee.com/big-hedgehog/aidex-sharp')">若依-Adiex Sharp快速开发平台</a></span>
-              </a-col>
-              <a-col>
-                <a-row>
-                  <a-col :span="12">
-                    <div class="wxcode" style="text-align: center;background: #f7f7f7;border: 1px solid #e8e8e8;width: 124px; margin: 0 auto;border-radius: 8px;padding-top: 8px;">
-                      <img src="../images/wxCode.png" style="height:100px">
-                      <p style="margin-bottom: 8px;">微信</p>
-                    </div>
-                  </a-col>
-                  <a-col :span="12">
-                    <div class="QQcode" style="text-align: center;background: #f7f7f7;border: 1px solid #e8e8e8;width: 124px; margin: 0 auto;border-radius: 8px;padding-top: 8px;">
-                      <img src="../images/QQCode.png"style="height:100px">
-                      <p style="margin-bottom: 8px;">QQ</p>
-                    </div>
-                  </a-col>
-                </a-row>
-              </a-col>
-            </a-col>
-          </a-row>
+<!--      <a-col :span="8">-->
+<!--        <div class="module-in module-in01">-->
+<!--          <a-page-header :ghost="false" title="技术选型">-->
+<!--            <template slot="extra">-->
+<!--              <a-icon type="more" />-->
+<!--            </template>-->
+<!--          </a-page-header>-->
+<!--          <a-row :gutter="[24,24]">-->
+<!--            <a-col :span="12">-->
+<!--              <div class="technology">-->
+<!--                <a-list size="small" :split="false" :data-source="consoleTech">-->
+<!--                  <a-list-item slot="renderItem" slot-scope="item">-->
+<!--                    {{ item }}-->
+<!--                  </a-list-item>-->
+<!--                  <div slot="header">-->
+<!--                    后端-->
+<!--                  </div>-->
+<!--                </a-list>-->
+<!--              </div>-->
+<!--            </a-col>-->
+<!--            <a-col :span="12">-->
+<!--              <div class="technology">-->
+<!--                <a-list size="small" :split="false" :data-source="frontTech" >-->
+<!--                  <a-list-item slot="renderItem" slot-scope="item" >-->
+<!--                    {{ item }}-->
+<!--                  </a-list-item>-->
+<!--                  <div slot="header">-->
+<!--                    前端-->
+<!--                  </div>-->
+<!--                </a-list>-->
+<!--              </div>-->
+<!--            </a-col>-->
+<!--          </a-row>-->
+<!--        </div>-->
+<!--      </a-col>-->
+<!--      <a-col :span="8">-->
+<!--        <div class="module-in module-in01 ">-->
+<!--          <a-page-header :ghost="false" title="联系我们">-->
+<!--            <template slot="extra">-->
+<!--              <a-icon type="more" />-->
+<!--            </template>-->
+<!--          </a-page-header>-->
+<!--          <p>-->
+<!--            <a-alert message="专业UI设计（5年+）+VUE前端功能开发（3年+）" type="info" show-icon />-->
+<!--          </p>-->
+<!--          <a-list item-layout="horizontal" :data-source="detaildata" class="list-detail">-->
+<!--            <a-list-item class="module-text">-->
+<!--              <a-list-item-meta>-->
+<!--                <template slot="description">-->
+<!--                  <span>【1】</span>-->
+<!--                  <span>接AiDex Sharp系列架构的定制服务</span>-->
+<!--                </template>-->
+<!--              </a-list-item-meta>-->
+<!--            </a-list-item>-->
+<!--            <a-list-item class="module-text">-->
+<!--              <a-list-item-meta>-->
+<!--                <template slot="description">-->
+<!--                  <span>【2】</span>-->
+<!--                  <span >接3个月以内工期的vue、springboot、springcloud、app、小程序等软件定制服务</span>-->
+<!--                </template>-->
+<!--              </a-list-item-meta>-->
+<!--            </a-list-item>-->
+<!--            <a-list-item class="module-text">-->
+<!--              <a-list-item-meta>-->
+<!--                <template slot="description">-->
+<!--                  <span>【3】</span>-->
+<!--                  <span>UI原型页面设计及切图服务</span>-->
+<!--                </template>-->
+<!--              </a-list-item-meta>-->
+<!--            </a-list-item>-->
+<!--            <a-list-item class="module-text">-->
+<!--              <a-list-item-meta>-->
+<!--                <template slot="description">-->
+<!--                  <span>【4】</span>-->
+<!--                  <span>有意向请联系唯一指定联系人：皮皮大刺猬（右侧扫码）</span>-->
+<!--                </template>-->
+<!--              </a-list-item-meta>-->
+<!--            </a-list-item>-->
+<!--          </a-list>-->
+<!--        </div>-->
+<!--      </a-col>-->
+<!--      &lt;!&ndash; 个人信息 &ndash;&gt;-->
+<!--      <a-col :span="8">-->
+<!--        <div class="module-in module-in07" style="height: 370px;">-->
+<!--          <a-page-header :ghost="false" title="关于我">-->
+<!--            <template slot="extra">-->
+<!--              <a-icon type="more" />-->
+<!--            </template>-->
+<!--          </a-page-header>-->
+<!--          <a-row>-->
+<!--            <a-col>-->
+<!--              <a-col class="name">-->
+<!--                <span>皮皮大刺猬</span>-->
+<!--                <a-icon type="form" @click="compileshowModal" />-->
+<!--                <a-modal v-model="compile" title="Basic Modal" @ok="compilehandleOk" centered>-->
+<!--                  <p>Some contents...</p>-->
+<!--                  <p>Some contents...</p>-->
+<!--                  <p>Some contents...</p>-->
+<!--                </a-modal>-->
+<!--              </a-col>-->
+<!--              <a-col>-->
+<!--                <span>QQ号：</span>-->
+<!--                <span>1125373330</span>-->
+<!--              </a-col>-->
+<!--              <a-col>-->
+<!--                <span>QQ群：</span>-->
+<!--                <span>208511180</span>-->
+<!--              </a-col>-->
+<!--              <a-col>-->
+<!--                <span>微信号：</span>-->
+<!--                <span>big-hebgehog</span>-->
+<!--              </a-col>-->
+<!--              <a-col>-->
+<!--                <span>我的特长：</span>-->
+<!--                <span>专业UI设计（5年+）+VUE前端功能开发（3年+）</span>-->
+<!--              </a-col>-->
+<!--              <a-col>-->
+<!--                <span>项目：</span>-->
+<!--                <span><a style="color: red;" @click="goTarget('https://gitee.com/big-hedgehog/aidex-sharp')">若依-Adiex Sharp快速开发平台</a></span>-->
+<!--              </a-col>-->
+<!--              <a-col>-->
+<!--                <a-row>-->
+<!--                  <a-col :span="12">-->
+<!--                    <div class="wxcode" style="text-align: center;background: #f7f7f7;border: 1px solid #e8e8e8;width: 124px; margin: 0 auto;border-radius: 8px;padding-top: 8px;">-->
+<!--                      <img src="../images/wxCode.png" style="height:100px">-->
+<!--                      <p style="margin-bottom: 8px;">微信</p>-->
+<!--                    </div>-->
+<!--                  </a-col>-->
+<!--                  <a-col :span="12">-->
+<!--                    <div class="QQcode" style="text-align: center;background: #f7f7f7;border: 1px solid #e8e8e8;width: 124px; margin: 0 auto;border-radius: 8px;padding-top: 8px;">-->
+<!--                      <img src="../images/QQCode.png"style="height:100px">-->
+<!--                      <p style="margin-bottom: 8px;">QQ</p>-->
+<!--                    </div>-->
+<!--                  </a-col>-->
+<!--                </a-row>-->
+<!--              </a-col>-->
+<!--            </a-col>-->
+<!--          </a-row>-->
 
-        </div>
-      </a-col>
+<!--        </div>-->
+<!--      </a-col>-->
     </a-row>
     <a-row :gutter="[16,16]">
       <!-- 顶部列表 -->
@@ -195,27 +195,27 @@
               </a-table>
             </div>
           </a-col>
-          <!-- 组件API搜索 -->
-          <a-col :span="24">
-            <div class="module-in module-in03">
-              <a-page-header :ghost="false" title="组件API搜索">
-                <template slot="extra">
-                  <a-icon type="more" />
-                </template>
-              </a-page-header>
-              <a-input placeholder="输入组件或 API 名称，支持中英文模糊搜索" />
-              <div class="subtitle">最近使用</div>
-              <!-- 默认最多只显示4个最近使用项 -->
-              <a-list :grid="{ gutter: 16, column: 4 }" :data-source="apidata">
-                <a-list-item slot="renderItem" slot-scope="item,">
-                  <a-card>
-                    <a-icon :type="item.icon" />
-                    <span>{{ item.con }}</span>
-                  </a-card>
-                </a-list-item>
-              </a-list>
-            </div>
-          </a-col>
+<!--          &lt;!&ndash; 组件API搜索 &ndash;&gt;-->
+<!--          <a-col :span="24">-->
+<!--            <div class="module-in module-in03">-->
+<!--              <a-page-header :ghost="false" title="组件API搜索">-->
+<!--                <template slot="extra">-->
+<!--                  <a-icon type="more" />-->
+<!--                </template>-->
+<!--              </a-page-header>-->
+<!--              <a-input placeholder="输入组件或 API 名称，支持中英文模糊搜索" />-->
+<!--              <div class="subtitle">最近使用</div>-->
+<!--              &lt;!&ndash; 默认最多只显示4个最近使用项 &ndash;&gt;-->
+<!--              <a-list :grid="{ gutter: 16, column: 4 }" :data-source="apidata">-->
+<!--                <a-list-item slot="renderItem" slot-scope="item,">-->
+<!--                  <a-card>-->
+<!--                    <a-icon :type="item.icon" />-->
+<!--                    <span>{{ item.con }}</span>-->
+<!--                  </a-card>-->
+<!--                </a-list-item>-->
+<!--              </a-list>-->
+<!--            </div>-->
+<!--          </a-col>-->
           <!-- 趋势图 -->
           <a-col :span="24">
             <div class="module-in module-in04">
@@ -243,55 +243,55 @@
               </div>
             </div>
           </a-col>
-          <!-- 帮助文档 -->
-          <a-col :span="24">
-            <div class="module-in module-in05">
-              <a-page-header :ghost="false" title="帮助文档">
-              </a-page-header>
-              <a-row :gutter="[16,16]">
-                <a-col :span="4">
-                  <a-list size="small" :data-source="aiddata">
-                    <a-list-item slot="renderItem" slot-scope="item">
-                      {{ item }}
-                    </a-list-item>
-                    <div slot="header">
-                      组件使用方法
-                    </div>
-                  </a-list>
-                </a-col>
-                <a-col :span="4">
-                  <a-list size="small" :data-source="aiddata">
-                    <a-list-item slot="renderItem" slot-scope="item">
-                      {{ item }}
-                    </a-list-item>
-                    <div slot="header">
-                      组件使用方法
-                    </div>
-                  </a-list>
-                </a-col>
-                <a-col :span="4">
-                  <a-list size="small" :data-source="aiddata">
-                    <a-list-item slot="renderItem" slot-scope="item">
-                      {{ item }}
-                    </a-list-item>
-                    <div slot="header">
-                      组件使用方法
-                    </div>
-                  </a-list>
-                </a-col>
-                <a-col :span="4">
-                  <a-list size="small" :data-source="aiddata">
-                    <a-list-item slot="renderItem" slot-scope="item">
-                      {{ item }}
-                    </a-list-item>
-                    <div slot="header">
-                      组件使用方法
-                    </div>
-                  </a-list>
-                </a-col>
-              </a-row>
-            </div>
-          </a-col>
+<!--          &lt;!&ndash; 帮助文档 &ndash;&gt;-->
+<!--          <a-col :span="24">-->
+<!--            <div class="module-in module-in05">-->
+<!--              <a-page-header :ghost="false" title="帮助文档">-->
+<!--              </a-page-header>-->
+<!--              <a-row :gutter="[16,16]">-->
+<!--                <a-col :span="4">-->
+<!--                  <a-list size="small" :data-source="aiddata">-->
+<!--                    <a-list-item slot="renderItem" slot-scope="item">-->
+<!--                      {{ item }}-->
+<!--                    </a-list-item>-->
+<!--                    <div slot="header">-->
+<!--                      组件使用方法-->
+<!--                    </div>-->
+<!--                  </a-list>-->
+<!--                </a-col>-->
+<!--                <a-col :span="4">-->
+<!--                  <a-list size="small" :data-source="aiddata">-->
+<!--                    <a-list-item slot="renderItem" slot-scope="item">-->
+<!--                      {{ item }}-->
+<!--                    </a-list-item>-->
+<!--                    <div slot="header">-->
+<!--                      组件使用方法-->
+<!--                    </div>-->
+<!--                  </a-list>-->
+<!--                </a-col>-->
+<!--                <a-col :span="4">-->
+<!--                  <a-list size="small" :data-source="aiddata">-->
+<!--                    <a-list-item slot="renderItem" slot-scope="item">-->
+<!--                      {{ item }}-->
+<!--                    </a-list-item>-->
+<!--                    <div slot="header">-->
+<!--                      组件使用方法-->
+<!--                    </div>-->
+<!--                  </a-list>-->
+<!--                </a-col>-->
+<!--                <a-col :span="4">-->
+<!--                  <a-list size="small" :data-source="aiddata">-->
+<!--                    <a-list-item slot="renderItem" slot-scope="item">-->
+<!--                      {{ item }}-->
+<!--                    </a-list-item>-->
+<!--                    <div slot="header">-->
+<!--                      组件使用方法-->
+<!--                    </div>-->
+<!--                  </a-list>-->
+<!--                </a-col>-->
+<!--              </a-row>-->
+<!--            </div>-->
+<!--          </a-col>-->
         </a-row>
       </a-col>
       <a-col :span="8" class="module-list">
@@ -334,32 +334,32 @@
             </div>
           </a-col>
 
-          <!-- 产品热度 -->
-          <a-col>
-            <div class="module-in module-in08">
-              <a-page-header :ghost="false" title="产品热度">
-                <template slot="extra">
-                  <a-icon type="more" />
-                </template>
-              </a-page-header>
-              <a-list item-layout="horizontal" :data-source="heatdata">
-                <a-list-item slot="renderItem" slot-scope="item">
-                  <a-list-item-meta>
-                    <a slot="description" :href="item.url">
-                      <div class="order">{{ item.index }}</div>
-                      <a-icon class="icon" :type="item.icon" />
-                      <div class="txt">{{ item.txt }}</div>
-                      <a-statistic :value="item.value" :precision="1">
-                        <template #suffix>
-                          <a-icon :type="item.arrow" :style="{ color:item.color }" />
-                        </template>
-                      </a-statistic>
-                    </a>
-                  </a-list-item-meta>
-                </a-list-item>
-              </a-list>
-            </div>
-          </a-col>
+<!--          &lt;!&ndash; 产品热度 &ndash;&gt;-->
+<!--          <a-col>-->
+<!--            <div class="module-in module-in08">-->
+<!--              <a-page-header :ghost="false" title="产品热度">-->
+<!--                <template slot="extra">-->
+<!--                  <a-icon type="more" />-->
+<!--                </template>-->
+<!--              </a-page-header>-->
+<!--              <a-list item-layout="horizontal" :data-source="heatdata">-->
+<!--                <a-list-item slot="renderItem" slot-scope="item">-->
+<!--                  <a-list-item-meta>-->
+<!--                    <a slot="description" :href="item.url">-->
+<!--                      <div class="order">{{ item.index }}</div>-->
+<!--                      <a-icon class="icon" :type="item.icon" />-->
+<!--                      <div class="txt">{{ item.txt }}</div>-->
+<!--                      <a-statistic :value="item.value" :precision="1">-->
+<!--                        <template #suffix>-->
+<!--                          <a-icon :type="item.arrow" :style="{ color:item.color }" />-->
+<!--                        </template>-->
+<!--                      </a-statistic>-->
+<!--                    </a>-->
+<!--                  </a-list-item-meta>-->
+<!--                </a-list-item>-->
+<!--              </a-list>-->
+<!--            </div>-->
+<!--          </a-col>-->
           <!-- 统计信息 -->
           <a-col>
             <div class="module-in module-in09">

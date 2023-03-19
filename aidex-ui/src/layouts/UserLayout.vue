@@ -6,8 +6,8 @@
           <div class="header">
             <a href="/">
               <img src="~@/assets/logo.svg" class="logo" alt="logo">
-              <span class="title">Aidex Sharp</span><br>
-              <span class="title">快速开发平台</span>
+              <span class="title">雅仁口腔医院</span><br>
+              <span class="title">医生端</span>
             </a>
           </div>
         </div>

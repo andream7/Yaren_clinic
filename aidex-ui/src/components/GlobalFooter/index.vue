@@ -5,7 +5,7 @@
       <a target="_blank">Github</a> -->
     </template>
     <template v-slot:copyright>
-      <a target="_blank">Aidex Sharp</a>
+      <a target="_blank">雅仁口腔医院</a>
     </template>
   </global-footer>
 </template>

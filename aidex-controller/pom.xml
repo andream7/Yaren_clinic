@@ -51,12 +51,6 @@
             <artifactId>aidex-quartz</artifactId>
         </dependency>
 
-        <!-- 代码生成-->
-        <dependency>
-            <groupId>com.aidex</groupId>
-            <artifactId>aidex-generator</artifactId>
-        </dependency>
-
     </dependencies>
 
 </project>
