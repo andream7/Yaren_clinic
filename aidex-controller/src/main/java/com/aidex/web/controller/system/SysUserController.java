@@ -58,26 +58,26 @@ public class SysUserController extends BaseController {
         return R.data(userService.findPage(user));
     }
 
-    @Log(title = "用户管理", businessType = BusinessType.EXPORT)
-    @PreAuthorize("@ss.hasPermi('system:user:export')")
-    @GetMapping("/export")
-    public R export(SysUser user) {
-        List<SysUser> list = userService.findList(user);
-        ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
-        return util.exportExcel(list, "用户数据");
-    }
-
-    @Log(title = "用户管理", businessType = BusinessType.IMPORT)
-    @PreAuthorize("@ss.hasPermi('system:user:import')")
-    @PostMapping("/importData")
-    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
-        ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
-        List<SysUser> userList = util.importExcel(file.getInputStream());
-        LoginUser loginUser = getLoginUser();
-        String operName = loginUser.getUsername();
-        String message = userService.importUser(userList, updateSupport, operName);
-        return AjaxResult.success(message);
-    }
+//    @Log(title = "用户管理", businessType = BusinessType.EXPORT)
+//    @PreAuthorize("@ss.hasPermi('system:user:export')")
+//    @GetMapping("/export")
+//    public R export(SysUser user) {
+//        List<SysUser> list = userService.findList(user);
+//        ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
+//        return util.exportExcel(list, "用户数据");
+//    }
+//
+//    @Log(title = "用户管理", businessType = BusinessType.IMPORT)
+//    @PreAuthorize("@ss.hasPermi('system:user:import')")
+//    @PostMapping("/importData")
+//    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
+//        ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
+//        List<SysUser> userList = util.importExcel(file.getInputStream());
+//        LoginUser loginUser = getLoginUser();
+//        String operName = loginUser.getUsername();
+//        String message = userService.importUser(userList, updateSupport, operName);
+//        return AjaxResult.success(message);
+//    }
 
     @ApiOperation(value = "根据医生编号获取详细信息")
     @PreAuthorize("@ss.hasPermi('system:user:query')")
