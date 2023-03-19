@@ -30,21 +30,21 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
 
     @Resource
     private VisitPlanMapper planMapper;
-
-    @Resource
-    private IHospitalDoctorService hospitalDoctorService;
-
-    @Resource
-    private IHospitalClinicService hospitalClinicService;
-
-    @Resource
-    private IHospitalInfoService hospitalInfoService;
-
-    @Resource
-    private IHospitalOutpatientService hospitalOutpatientService;
-
-    @Resource
-    private IHospitalSpecialService hospitalSpecialService;
+//
+//    @Resource
+//    private IHospitalDoctorService hospitalDoctorService;
+//
+//    @Resource
+//    private IHospitalClinicService hospitalClinicService;
+//
+//    @Resource
+//    private IHospitalInfoService hospitalInfoService;
+//
+//    @Resource
+//    private IHospitalOutpatientService hospitalOutpatientService;
+//
+//    @Resource
+//    private IHospitalSpecialService hospitalSpecialService;
 
     @Resource
     private IVisitAppointmentService appointmentService;
@@ -157,9 +157,9 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
         VisitDoctorPlanDTO dto = new VisitDoctorPlanDTO();
 
         // 设置医生信息
-        if (hospitalDoctorService.getConvert(doctorId).isPresent()) {
-            dto.setDoctorDTO(hospitalDoctorService.getConvert(doctorId).get());
-        }
+//        if (hospitalDoctorService.getConvert(doctorId).isPresent()) {
+//            dto.setDoctorDTO(hospitalDoctorService.getConvert(doctorId).get());
+//        }
 
         // 设置医生出诊信息列表
         dto.setPlanListDTOList(getVisitPlanDTO(doctorId, start, end));
@@ -295,20 +295,20 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
 
         BeanUtils.copyProperties(plan, dto);
 
-        // 设置诊室地址
-        dto.setClinicName(hospitalClinicService.getAddress(plan.getClinicId()));
-
-        // 设置医生名称
-        dto.setDoctorName(hospitalDoctorService.getName(plan.getDoctorId()));
-
-        // 设置门诊名称
-        dto.setOutpatientName(hospitalOutpatientService.getName(plan.getOutpatientId()));
-
-        // 设置专科名称
-        dto.setSpecialName(hospitalSpecialService.getName(plan.getSpecialId()));
-
-        // 设置医院名称
-        dto.setHospitalName(hospitalInfoService.getName(plan.getHospitalId()));
+//        // 设置诊室地址
+//        dto.setClinicName(hospitalClinicService.getAddress(plan.getClinicId()));
+//
+//        // 设置医生名称
+//        dto.setDoctorName(hospitalDoctorService.getName(plan.getDoctorId()));
+//
+//        // 设置门诊名称
+//        dto.setOutpatientName(hospitalOutpatientService.getName(plan.getOutpatientId()));
+//
+//        // 设置专科名称
+//        dto.setSpecialName(hospitalSpecialService.getName(plan.getSpecialId()));
+//
+//        // 设置医院名称
+//        dto.setHospitalName(hospitalInfoService.getName(plan.getHospitalId()));
 
         return dto;
     }
@@ -372,9 +372,9 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
                     VisitPlanListDTO dto = new VisitPlanListDTO();
 
                     // 设置医院信息
-                    if (hospitalInfoService.getOptional(hospitalId).isPresent()) {
-                        dto.setInfo(hospitalInfoService.getOptional(hospitalId).get());
-                    }
+//                    if (hospitalInfoService.getOptional(hospitalId).isPresent()) {
+//                        dto.setInfo(hospitalInfoService.getOptional(hospitalId).get());
+//                    }
 
                     // 设置医生出诊列表
                     if (CollUtil.isNotEmpty(list)) {
