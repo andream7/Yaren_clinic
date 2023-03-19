@@ -67,6 +67,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     private SysUserRoleMapper sysUserRoleMapper;
 
     @Override
+    public boolean count(Long id) {
+        return (mapper.countById(id) > 0) ? true: false;
+    }
+
+    @Override
     @DataScope(deptAlias = "t", userAlias = "t")
     public PageInfo<SysUser> findPage(SysUser sysUser) {
         return super.findPage(sysUser);
