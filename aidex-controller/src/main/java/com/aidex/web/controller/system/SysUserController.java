@@ -6,12 +6,10 @@ import com.aidex.common.core.domain.AjaxResult;
 import com.aidex.common.core.domain.R;
 import com.aidex.common.core.domain.entity.SysRole;
 import com.aidex.common.core.domain.entity.SysUser;
-import com.aidex.common.core.domain.model.LoginUser;
 import com.aidex.common.core.page.PageDomain;
 import com.aidex.common.enums.BusinessType;
 import com.aidex.common.utils.SecurityUtils;
 import com.aidex.common.utils.StringUtils;
-import com.aidex.common.utils.poi.ExcelUtil;
 import com.aidex.system.domain.SysPost;
 import com.aidex.system.domain.SysUserRole;
 import com.aidex.system.service.ISysRoleService;
@@ -19,13 +17,13 @@ import com.aidex.system.service.ISysUserService;
 import com.aidex.system.service.SysPostService;
 import com.alibaba.fastjson2.JSONObject;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -38,6 +36,7 @@ import java.util.stream.Collectors;
  *
  * @author ruoyi
  */
+@Api(value = "医生模块", tags = "医生信息接口")
 @RestController
 @RequestMapping("/system/user")
 public class SysUserController extends BaseController {
@@ -51,9 +50,7 @@ public class SysUserController extends BaseController {
     @Autowired
     private SysPostService postService;
 
-    /**
-     * 获取用户列表
-     */
+    @ApiOperation(value = "获取医生列表")
     @PreAuthorize("@ss.hasPermi('system:user:list')")
     @GetMapping("/list")
     public R<PageInfo> page(SysUser user, HttpServletRequest request, HttpServletResponse response) {
@@ -82,15 +79,7 @@ public class SysUserController extends BaseController {
         return AjaxResult.success(message);
     }
 
-    @GetMapping("/importTemplate")
-    public R importTemplate() {
-        ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
-        return util.importTemplateExcel("用户数据");
-    }
-
-    /**
-     * 根据用户编号获取详细信息
-     */
+    @ApiOperation(value = "根据医生编号获取详细信息")
     @PreAuthorize("@ss.hasPermi('system:user:query')")
     @GetMapping(value = {"/", "/{userId}"})
     public AjaxResult getInfo(@PathVariable(value = "userId", required = false) String userId) {
@@ -106,19 +95,15 @@ public class SysUserController extends BaseController {
         return ajax;
     }
 
-    /**
-     * 新增用户
-     */
+    @ApiOperation(value = "新增医生")
     @PreAuthorize("@ss.hasPermi('system:user:add')")
-    @Log(title = "用户管理", businessType = BusinessType.INSERT)
+    @Log(title = "医生管理", businessType = BusinessType.INSERT)
     @PostMapping
     public R add(@Validated @RequestBody SysUser user) {
         return R.status(userService.insertUser(user));
     }
 
-    /**
-     * 修改用户
-     */
+    @ApiOperation(value = "修改医生")
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -127,11 +112,9 @@ public class SysUserController extends BaseController {
         return R.status(userService.updateUser(user));
     }
 
-    /**
-     * 删除用户
-     */
+    @ApiOperation(value = "删除医生")
     @PreAuthorize("@ss.hasPermi('system:user:remove')")
-    @Log(title = "用户管理", businessType = BusinessType.DELETE)
+    @Log(title = "医生管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{userIds}")
     public R remove(@PathVariable("userIds") String[] userIds) {
         if (ArrayUtils.contains(userIds, getUserId())) {
@@ -140,11 +123,9 @@ public class SysUserController extends BaseController {
         return R.status(userService.deleteUserByIds(userIds));
     }
 
-    /**
-     * 重置密码
-     */
+    @ApiOperation(value = "重置密码")
     @PreAuthorize("@ss.hasPermi('system:user:resetPwd')")
-    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @Log(title = "医生管理", businessType = BusinessType.UPDATE)
     @PutMapping("/resetPwd")
     public R resetPwd(@RequestBody SysUser user) {
         SysUser dbUser = userService.get(user.getId());
@@ -152,11 +133,9 @@ public class SysUserController extends BaseController {
         return R.status(userService.resetUserPwd(dbUser.getUserName(),SecurityUtils.encryptPassword(user.getPassword())));
     }
 
-    /**
-     * 状态修改
-     */
+    @ApiOperation(value = "状态修改")
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
-    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @Log(title = "医生管理", businessType = BusinessType.UPDATE)
     @PutMapping("/changeStatus")
     public R changeStatus(@RequestBody SysUser user) {
         userService.checkUserAllowed(user);
@@ -164,11 +143,9 @@ public class SysUserController extends BaseController {
         return R.status(userService.updateUserStatus(user));
     }
 
-    /**
-     * 校验角色编码是否存在
-     */
+    @ApiOperation(value = "校验角色编码是否存在")
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
-    @Log(title = "用户管理", businessType = BusinessType.CHECK)
+    @Log(title = "医生管理", businessType = BusinessType.CHECK)
     @GetMapping("/checkUserNameUnique")
     public R checkUserNameUnique(SysUser user) {
         Map<String, String> checkMap = new HashMap<String, String>(1);
@@ -181,11 +158,9 @@ public class SysUserController extends BaseController {
         return R.data(checkMap);
     }
 
-    /**
-     * 校验角色编码是否存在
-     */
+    @ApiOperation(value = "校验角色邮箱是否存在")
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
-    @Log(title = "用户管理", businessType = BusinessType.CHECK)
+    @Log(title = "医生管理", businessType = BusinessType.CHECK)
     @GetMapping("/checkEmailUnique")
     public R checkEmailUnique(SysUser user) {
         Map<String, String> checkMap = new HashMap<String, String>(1);
@@ -198,11 +173,9 @@ public class SysUserController extends BaseController {
         return R.data(checkMap);
     }
 
-    /**
-     * 校验角色编码是否存在
-     */
+    @ApiOperation(value = "校验角色编码是否存在")
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
-    @Log(title = "用户管理", businessType = BusinessType.CHECK)
+    @Log(title = "医生管理", businessType = BusinessType.CHECK)
     @GetMapping("/checkPhoneUnique")
     public R checkPhoneUnique(SysUser user) {
         Map<String, String> checkMap = new HashMap<String, String>(1);
@@ -215,25 +188,14 @@ public class SysUserController extends BaseController {
         return R.data(checkMap);
     }
 
-    /**
-     * 通用选人页面根据用户ID
-     *
-     * @return
-     */
+    @ApiOperation(value = "通用选人页面根据用户ID")
     @PostMapping(value = {"/getUserInfoByIds"})
     public R getUserInfoByIds(@Validated @RequestBody JSONObject userIdsObj) {
         List<Map<String, Object>> sysUserList = userService.getUserInfoByIds(userIdsObj);
         return R.data(sysUserList);
     }
 
-    /**
-     * 获取角色下所有用户信息
-     *
-     * @param sysUser
-     * @param request
-     * @param response
-     * @return
-     */
+    @ApiOperation(value = "获取角色下所有用户信息")
     @PreAuthorize("@ss.hasPermi('system:user:list')")
     @GetMapping("/roleUserList")
     public R<PageInfo> roleUserPage(SysUser sysUser, HttpServletRequest request, HttpServletResponse response) {
@@ -241,18 +203,17 @@ public class SysUserController extends BaseController {
         return R.data(userService.findRoleUserPage(sysUser));
     }
 
+    @ApiOperation(value = "添加用户角色")
     @PreAuthorize("@ss.hasPermi('system:user:add')")
-    @Log(title = "用户角色管理", businessType = BusinessType.INSERT)
+    @Log(title = "医生角色管理", businessType = BusinessType.INSERT)
     @PostMapping("/addRoleUser")
     public R addRoleUser(@Validated @RequestBody SysUserRole sysUserRole) {
         return R.status(userService.insertRoleUser(sysUserRole));
     }
 
-    /**
-     * 刷新缓存
-     */
+    @ApiOperation(value = "刷新缓存")
     @PreAuthorize("@ss.hasPermi('system:config:remove')")
-    @Log(title = "用户管理", businessType = BusinessType.CLEAN)
+    @Log(title = "医生管理", businessType = BusinessType.CLEAN)
     @DeleteMapping("/refreshCache")
     public R refreshCache() {
         userService.refreshCache();
