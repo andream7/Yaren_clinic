@@ -41,13 +41,13 @@ public class VisitAppointmentServiceImpl implements IVisitAppointmentService {
     private IVisitPlanService visitPlanService;
 
     @Resource
-    private IHospitalClinicService hospitalClinicService;
+    private IUserCaseService userCaseService;
+
+    @Resource
+    private SysDeptService sysDeptService;
 
     @Resource
     private IUserMedicalCardService userMedicalCardService;
-
-    @Resource
-    private IUserCaseService userCaseService;
 
     /**
      * 获取已取号的数目
@@ -481,7 +481,7 @@ public class VisitAppointmentServiceImpl implements IVisitAppointmentService {
 
         VisitPlan plan = plans.get(0);
 
-        return hospitalClinicService.getAddress(plan.getClinicId());
+        return sysDeptService.selectDeptByDeptCode(String.valueOf(plan.getClinicId())).getDeptName();
     }
 
     /**

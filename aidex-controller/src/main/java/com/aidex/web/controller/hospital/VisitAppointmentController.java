@@ -7,10 +7,7 @@ import com.aidex.common.core.domain.api.CommonResult;
 import com.aidex.system.dto.*;
 import com.aidex.system.dto.param.VisitAppointmentParam;
 import com.aidex.system.entity.VisitAppointment;
-import com.aidex.system.service.IPatientService;
-import com.aidex.system.service.ISysUserService;
-import com.aidex.system.service.IVisitAppointmentService;
-import com.aidex.system.service.IVisitPlanService;
+import com.aidex.system.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +34,9 @@ public class VisitAppointmentController {
     private IVisitAppointmentService appointmentService;
 
     @Resource
+    private IUserMedicalCardService userMedicalCardService;
+
+    @Resource
     private IVisitPlanService planService;
 
     @Resource
@@ -46,15 +46,15 @@ public class VisitAppointmentController {
     @PostMapping
     public CommonResult insertAppointment(@RequestBody VisitAppointmentParam param) {
 
-        if (!patientService.count(param.getPatientId())) {
-            return CommonResult.validateFailed("不存在，该用户编号！");
+        if (!userMedicalCardService.countCardId(param.getCardId())) {
+            return CommonResult.validateFailed("不存在，该就诊卡号！");
         }
 
         if (!planService.count(param.getPlanId())) {
             return CommonResult.validateFailed("不存在，该出诊编号！");
         }
 
-        if (appointmentService.count(param.getPatientId(), param.getPlanId())) {
+        if (appointmentService.count(param.getCardId(), param.getPlanId())) {
             return CommonResult.success("该出诊，已存在预约记录！");
         }
 
@@ -67,18 +67,19 @@ public class VisitAppointmentController {
 
     @ApiOperation(value = "判断是否已预约", notes = "传入 出诊编号、就诊卡号")
     @GetMapping(value = "/check")
-    public CommonResult checkAppointment(@RequestParam Long patientId, @RequestParam Long planId) {
+    public CommonResult checkAppointment(@RequestParam Long cardId, @RequestParam Long planId) {
 
-        if (!patientService.count(patientId)) {
-            return CommonResult.validateFailed("不存在，该用户编号！");
+        if (!userMedicalCardService.countCardId(cardId)) {
+            return CommonResult.validateFailed("不存在，该就诊卡号！");
         }
 
         if (!planService.count(planId)) {
             return CommonResult.validateFailed("不存在，该出诊编号！");
         }
 
-        return CommonResult.success(appointmentService.count(patientId, planId));
+        return CommonResult.success(appointmentService.count(cardId, planId));
     }
+
 
     @ApiOperation(value = "修改预约状态：取消", notes = "传入 预约编号")
     @RequestMapping(value = "/cancel/{id}", method = RequestMethod.PUT)
@@ -118,6 +119,10 @@ public class VisitAppointmentController {
                                                                                      @RequestParam Integer pageNum,
                                                                                      @RequestParam Integer pageSize) {
 
+        if (!userMedicalCardService.countCardId(cardId)) {
+            return CommonResult.validateFailed("不存在，该就诊卡编号！");
+        }
+
         if (!patientService.count(patientId)) {
             return CommonResult.validateFailed("不存在，该用户编号！");
         }
@@ -138,16 +143,15 @@ public class VisitAppointmentController {
 
     @ApiOperation(value = "获取就诊记录列表", notes = "传入就诊卡编号")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public CommonResult<CommonPage<VisitAppointmentDTO>> listAppointment(@RequestParam Long patientId, @RequestParam Integer pageNum,
+    public CommonResult<CommonPage<VisitAppointmentDTO>> listAppointment(@RequestParam Long cardId, @RequestParam Integer pageNum,
                                                                          @RequestParam Integer pageSize) {
 
-        if (!patientService.count(patientId)) {
-            return CommonResult.validateFailed("不存在，该用户编号！");
+        if (!userMedicalCardService.countCardId(cardId)) {
+            return CommonResult.validateFailed("不存在，该就诊卡编号！");
         }
 
-        return CommonResult.success(CommonPage.restPage(appointmentService.listNormalAppointment(patientId, pageNum, pageSize)));
+        return CommonResult.success(CommonPage.restPage(appointmentService.listNormalAppointment(cardId, pageNum, pageSize)));
     }
-
     @ApiOperation(value = "查看就诊记录详情", notes = "传入就诊卡编号")
     @RequestMapping(value = "/details", method = RequestMethod.GET)
     public CommonResult<VisitAppointmentWithCaseDTO> getAppointmentDetails(@RequestParam Long appointmentId) {
@@ -163,7 +167,12 @@ public class VisitAppointmentController {
     @RequestMapping(value = "/today", method = RequestMethod.GET)
     public CommonResult<CommonPage<VisitAppointmentQueueDTO>> getTodayAppointment(@RequestParam Long cardId,
                                                                                   @RequestParam Long patientid,
+
                                                                                   @RequestParam String date) {
+
+        if (!userMedicalCardService.countCardId(cardId)) {
+            return CommonResult.validateFailed("不存在，该就诊卡编号！");
+        }
 
         if (!patientService.count(patientid)) {
             return CommonResult.validateFailed("不存在，该用户编号！");

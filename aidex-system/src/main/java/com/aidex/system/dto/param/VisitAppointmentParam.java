@@ -26,12 +26,12 @@ public class VisitAppointmentParam implements Serializable {
     private Long planId;
 
     /**
-     * 患者编号
+     * 就诊卡号
      *
      * @mbg.generated
      */
-    @ApiModelProperty(value = "患者编号")
-    private Long patientId;
+    @ApiModelProperty(value = "就诊卡号")
+    private Long cardId;
 
     /**
      * 账号编号
