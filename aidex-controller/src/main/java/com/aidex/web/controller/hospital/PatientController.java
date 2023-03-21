@@ -5,6 +5,7 @@ import com.aidex.common.core.domain.api.CommonPage;
 import com.aidex.common.core.domain.api.CommonResult;
 import com.aidex.common.enums.BusinessType;
 import com.aidex.system.domain.vo.PatientBasicInfo;
+import com.aidex.system.dto.param.UserRegisterParam;
 import com.aidex.system.service.IPatientService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -25,6 +26,20 @@ public class PatientController {
 
     @Resource
     private IPatientService patientService;
+
+    @ApiOperation(value = "用户账号注册", notes = "传入 注册对象参数（姓名、头像、手机号、密码）")
+    @GetMapping(value = "/register")
+    public CommonResult registerUserAccount(@RequestBody UserRegisterParam param) {
+        if (patientService.countByPhoneId(param.getPhone())) {
+            return CommonResult.validateFailed("该账号名称已存在！");
+        }
+
+        if (patientService.insert(param)) {
+            return CommonResult.success();
+        }
+
+        return CommonResult.failed("服务器错误，请联系管理员！");
+    }
 
     @ApiOperation(value = "分页：搜索患者列表", notes = "传入 第几页、页大小")
     @PreAuthorize("@ss.hasPermi('system:user:list')")

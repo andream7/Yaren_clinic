@@ -1,6 +1,8 @@
 package com.aidex.system.service;
 
 import com.aidex.system.domain.vo.PatientBasicInfo;
+import com.aidex.system.dto.param.UserRegisterParam;
+
 import java.util.List;
 
 /**
@@ -27,13 +29,13 @@ public interface IPatientService {
 //     */
 //    boolean verifyCode(String phone, String code);
 //
-//    /**
-//     * 创建普通用户信息
-//     *
-//     * @param param 普通用户信息参数
-//     * @return 是否成功
-//     */
-//    boolean insert(UserRegisterParam param);
+    /**
+     * 创建普通用户信息
+     *
+     * @param param 普通用户信息参数
+     * @return 是否成功
+     */
+    boolean insert(UserRegisterParam param);
 
     /**
      * 更新普通用户信息
@@ -76,4 +78,6 @@ public interface IPatientService {
      * @return 是否存在
      */
     boolean count(Long id);
+
+    boolean countByPhoneId(String phone);
 }
