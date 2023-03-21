@@ -9,6 +9,7 @@ import com.aidex.common.utils.poi.ExcelUtil;
 import com.aidex.system.domain.SysNoticeUserRead;
 import com.aidex.system.service.SysNoticeUserReadService;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +25,7 @@ import java.util.List;
  * @email aidex@qq.com
  * @date 2021-07-02
  */
+@Api(value = "公告管理", tags = "通知公告用户阅读")
 @RestController
 @RequestMapping("/system/sysNoticeUserRead")
 public class SysNoticeUserReadController extends BaseController
