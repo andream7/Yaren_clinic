@@ -28,7 +28,7 @@ public class PatientController {
     private IPatientService patientService;
 
     @ApiOperation(value = "用户账号注册", notes = "传入 注册对象参数（姓名、头像、手机号、密码）")
-    @GetMapping(value = "/register")
+    @PostMapping(value = "/register")
     public CommonResult registerUserAccount(@RequestBody UserRegisterParam param) {
         if (patientService.countByPhoneId(param.getPhone())) {
             return CommonResult.validateFailed("该账号名称已存在！");

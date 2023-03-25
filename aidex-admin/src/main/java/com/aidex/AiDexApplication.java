@@ -25,5 +25,6 @@ public class AiDexApplication
         aidex.append("                                                      | |\n");
         aidex.append("                                                      |_|");
         System.out.println(aidex);
+        System.out.println("\nSwagger URL: \033[34m\033[4mhttp://127.0.0.1:8999/swagger-ui/index.html\033[0m");
     }
 }
