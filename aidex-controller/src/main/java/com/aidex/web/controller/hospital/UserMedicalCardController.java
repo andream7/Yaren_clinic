@@ -21,7 +21,7 @@ import java.util.Optional;
 @Api(value = "用户模块", tags = "就诊卡信息接口")
 @RestController
 @CrossOrigin
-@RequestMapping("/user")
+@RequestMapping("/hospital/user")
 public class UserMedicalCardController {
 
     /**

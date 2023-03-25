@@ -24,7 +24,7 @@ import static com.aidex.system.dto.AppointmentEnum.*;
 @Api(value = "出诊模块", tags = "出诊预约接口")
 @RestController
 @CrossOrigin
-@RequestMapping("/appointment")
+@RequestMapping("/hospital/appointment")
 public class VisitAppointmentController {
 
     @Resource

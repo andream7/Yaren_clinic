@@ -24,7 +24,7 @@ import java.util.List;
 @Api(value = "出诊模块", tags = "出诊计划接口")
 @RestController
 @CrossOrigin
-@RequestMapping("/plan")
+@RequestMapping("/hospital/plan")
 public class VisitPlanController {
 
     @Resource

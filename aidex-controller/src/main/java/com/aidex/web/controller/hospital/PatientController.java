@@ -21,7 +21,7 @@ import javax.annotation.Resource;
 @Api(value = "患者模块", tags = "患者信息接口")
 @RestController
 @CrossOrigin
-@RequestMapping("/patient")
+@RequestMapping("/hospital/patient")
 public class PatientController {
 
     @Resource

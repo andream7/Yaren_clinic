@@ -24,7 +24,7 @@ import javax.annotation.Resource;
 @Api(value = "用户模块", tags = "用户病例接口")
 @RestController
 @CrossOrigin
-@RequestMapping("/user")
+@RequestMapping("/hospital/user")
 public class UserCaseController {
 
     @Resource
