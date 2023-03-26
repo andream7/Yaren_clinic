@@ -15,36 +15,12 @@ public class VisitPlan implements Serializable {
     private Long id;
 
     /**
-     * 医院编号
-     *
-     * @mbg.generated
-     */
-    @ApiModelProperty(value = "医院编号")
-    private Long hospitalId;
-
-    /**
-     * 专科编号
-     *
-     * @mbg.generated
-     */
-    @ApiModelProperty(value = "专科编号")
-    private Long specialId;
-
-    /**
-     * 门诊编号
-     *
-     * @mbg.generated
-     */
-    @ApiModelProperty(value = "门诊编号")
-    private Long outpatientId;
-
-    /**
      * 诊室编号
      *
      * @mbg.generated
      */
     @ApiModelProperty(value = "诊室编号")
-    private Long clinicId;
+    private Long deptId;
 
     /**
      * 医生编号
@@ -96,36 +72,12 @@ public class VisitPlan implements Serializable {
         this.id = id;
     }
 
-    public Long getHospitalId() {
-        return hospitalId;
+    public Long getDeptId() {
+        return deptId;
     }
 
-    public void setHospitalId(Long hospitalId) {
-        this.hospitalId = hospitalId;
-    }
-
-    public Long getSpecialId() {
-        return specialId;
-    }
-
-    public void setSpecialId(Long specialId) {
-        this.specialId = specialId;
-    }
-
-    public Long getOutpatientId() {
-        return outpatientId;
-    }
-
-    public void setOutpatientId(Long outpatientId) {
-        this.outpatientId = outpatientId;
-    }
-
-    public Long getClinicId() {
-        return clinicId;
-    }
-
-    public void setClinicId(Long clinicId) {
-        this.clinicId = clinicId;
+    public void setDeptId(Long clinicId) {
+        this.deptId = clinicId;
     }
 
     public Long getDoctorId() {
@@ -175,10 +127,7 @@ public class VisitPlan implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", hospitalId=").append(hospitalId);
-        sb.append(", specialId=").append(specialId);
-        sb.append(", outpatientId=").append(outpatientId);
-        sb.append(", clinicId=").append(clinicId);
+        sb.append(", deptId=").append(deptId);
         sb.append(", doctorId=").append(doctorId);
         sb.append(", time=").append(time);
         sb.append(", day=").append(day);

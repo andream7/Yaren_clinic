@@ -44,7 +44,7 @@ public class VisitPlanController {
             return CommonResult.validateFailed("不存在，该医生编号！");
         }
 
-        if (!sysDeptService.checkDeptExistUser(param.getSpecialId())) {
+        if (!sysDeptService.isExistDeptById(param.getDeptId())) {
             return CommonResult.validateFailed("不存在，该科室编号！");
         }
 

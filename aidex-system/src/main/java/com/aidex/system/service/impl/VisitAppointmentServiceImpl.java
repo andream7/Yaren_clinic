@@ -481,7 +481,7 @@ public class VisitAppointmentServiceImpl implements IVisitAppointmentService {
 
         VisitPlan plan = plans.get(0);
 
-        return sysDeptService.selectDeptByDeptCode(String.valueOf(plan.getClinicId())).getDeptName();
+        return sysDeptService.selectDeptByDeptCode(String.valueOf(plan.getDeptId())).getDeptName();
     }
 
     /**

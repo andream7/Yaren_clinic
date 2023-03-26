@@ -363,10 +363,10 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
 
         planMapper.selectByExample(example).stream()
                 // 按照不同医院，进行分组
-                .collect(Collectors.groupingBy(VisitPlan::getHospitalId, Collectors.toList()))
+                .collect(Collectors.groupingBy(VisitPlan::getDeptId, Collectors.toList()))
 
                 // 按照不同医院，进行遍历
-                .forEach((hospitalId, list) -> {
+                .forEach((deptId, list) -> {
 
                     // 转换为医生出诊列表
                     VisitPlanListDTO dto = new VisitPlanListDTO();

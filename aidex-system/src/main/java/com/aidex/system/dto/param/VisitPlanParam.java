@@ -16,20 +16,12 @@ import java.util.Date;
 public class VisitPlanParam {
 
     /**
-     * 专科编号
+     * 部门编号
      *
      * @mbg.generated
      */
-    @ApiModelProperty(value = "专科编号")
-    private String specialId;
-
-    /**
-     * 门诊编号
-     *
-     * @mbg.generated
-     */
-    @ApiModelProperty(value = "门诊编号")
-    private Long outpatientId;
+    @ApiModelProperty(value = "部门编号")
+    private Long deptId;
 
     /**
      * 医生编号

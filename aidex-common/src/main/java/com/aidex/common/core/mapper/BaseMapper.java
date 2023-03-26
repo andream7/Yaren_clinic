@@ -1,6 +1,10 @@
 package com.aidex.common.core.mapper;
 
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
 import java.util.List;
+import java.util.Map;
 
 public interface BaseMapper<T> {
 	
@@ -54,5 +58,13 @@ public interface BaseMapper<T> {
 	 * @return
 	 */
 	public int delete(T entity);
-	
+
+	/**
+	 * 根据id集合获取用户对象
+	 * @param idsList
+	 * @return
+	 */
+	@Select("SELECT COUNT(*) FROM sys_dept WHERE dept_code = #{id}")
+	int selectCountById(Long id);
+
 }

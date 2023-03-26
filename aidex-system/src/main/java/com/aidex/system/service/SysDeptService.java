@@ -15,6 +15,8 @@ import java.util.Map;
  */
 public interface SysDeptService extends BaseTreeService<SysDept> {
 
+    boolean isExistDeptById(Long id);
+
     /**
      * 根据展开层级和父节点递归获取展示的数据
      *

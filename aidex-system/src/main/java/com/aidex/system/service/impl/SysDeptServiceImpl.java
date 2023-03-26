@@ -207,6 +207,12 @@ public class SysDeptServiceImpl extends BaseTreeServiceImpl<SysDeptMapper, SysDe
         }
     }
 
+    @Override
+    public boolean isExistDeptById(Long id) {
+        int count = mapper.selectCountById(id);
+        return count > 0;
+    }
+
     /**
      * 根据展开层级和父节点递归获取展示的数据
      *
