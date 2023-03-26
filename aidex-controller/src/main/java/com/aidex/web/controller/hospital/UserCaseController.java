@@ -24,7 +24,7 @@ import javax.annotation.Resource;
 @Api(value = "用户模块", tags = "用户病例接口")
 @RestController
 @CrossOrigin
-@RequestMapping("/hospital/user")
+@RequestMapping("/hospital")
 public class UserCaseController {
 
     @Resource
@@ -44,7 +44,7 @@ public class UserCaseController {
             return CommonResult.validateFailed("不存在，该就诊卡编号！");
         }
 
-        if (!userService.count(param.getDoctorId())) {
+        if (!userService.isExistDoctorById(param.getDoctorId())) {
             return CommonResult.validateFailed("不存在，该医生编号！");
         }
 

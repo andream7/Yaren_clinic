@@ -67,8 +67,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     private SysUserRoleMapper sysUserRoleMapper;
 
     @Override
-    public boolean count(Long id) {
-        return (mapper.countById(id) > 0) ? true: false;
+    public boolean isExistDoctorById(Long id) {
+        int count = mapper.selectCountById(id);
+        return count > 0;
     }
 
     @Override

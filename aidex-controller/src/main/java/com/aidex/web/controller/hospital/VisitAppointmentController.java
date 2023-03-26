@@ -24,7 +24,7 @@ import static com.aidex.system.dto.AppointmentEnum.*;
 @Api(value = "出诊模块", tags = "出诊预约接口")
 @RestController
 @CrossOrigin
-@RequestMapping("/hospital/appointment")
+@RequestMapping("/hospital/appoint")
 public class VisitAppointmentController {
 
     @Resource
@@ -187,7 +187,7 @@ public class VisitAppointmentController {
                                                                         @RequestParam Integer time, @RequestParam Integer pageNum,
                                                                         @RequestParam Integer pageSize) {
 
-        if (!userService.count(doctorId)) {
+        if (!userService.isExistDoctorById(doctorId)) {
             return CommonResult.validateFailed("不存在，该医生编号！");
         }
 
@@ -201,7 +201,7 @@ public class VisitAppointmentController {
     public CommonResult getClinicName(@RequestParam Long doctorId, @RequestParam String date,
                                       @RequestParam Integer time) {
 
-        if (!userService.count(doctorId)) {
+        if (!userService.isExistDoctorById(doctorId)) {
             return CommonResult.validateFailed("不存在，该医生编号！");
         }
 

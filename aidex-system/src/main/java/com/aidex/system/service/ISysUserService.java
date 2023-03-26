@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public interface ISysUserService extends BaseService<SysUser>
 {
-    boolean count(Long id);
+    boolean isExistDoctorById(Long id);
 
     @Override
     public PageInfo<SysUser> findPage(SysUser sysUser);

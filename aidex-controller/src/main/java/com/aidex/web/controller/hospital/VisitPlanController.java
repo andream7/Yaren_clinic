@@ -40,7 +40,7 @@ public class VisitPlanController {
     @PostMapping
     public CommonResult insertVisitPlan(@RequestBody VisitPlanParam param) {
 
-        if (!hospitalDoctorService.count(param.getDoctorId())) {
+        if (!hospitalDoctorService.isExistDoctorById(param.getDoctorId())) {
             return CommonResult.validateFailed("不存在，该医生编号！");
         }
 
@@ -64,7 +64,7 @@ public class VisitPlanController {
     @PutMapping(value = "/{id}")
     public CommonResult updateVisitPlan(@PathVariable Long id, @RequestBody VisitPlanUpdateParam param) {
 
-        if (!hospitalDoctorService.count(param.getDoctorId())) {
+        if (!hospitalDoctorService.isExistDoctorById(param.getDoctorId())) {
             return CommonResult.validateFailed("不存在，该医生编号！");
         }
 
@@ -141,7 +141,7 @@ public class VisitPlanController {
                                                                     @RequestParam String startDate,
                                                                     @RequestParam String endDate) {
 
-        if (!hospitalDoctorService.count(doctorId)) {
+        if (!hospitalDoctorService.isExistDoctorById(doctorId)) {
             return CommonResult.validateFailed("不存在，该医生编号！");
         }
 

@@ -3,6 +3,7 @@ package com.aidex.system.mapper;
 import com.aidex.common.core.domain.entity.SysUser;
 import com.aidex.common.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -78,5 +79,6 @@ public interface SysUserMapper extends BaseMapper<SysUser>
      */
     public List<SysUser> findRoleUserList(SysUser sysUser);
 
-    long countById(Long id);
+    @Select("SELECT COUNT(*) FROM sys_user WHERE id = #{id}")
+    int selectCountById(Long id);
 }
