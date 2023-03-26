@@ -76,8 +76,8 @@ public class VisitPlan implements Serializable {
         return deptId;
     }
 
-    public void setDeptId(Long clinicId) {
-        this.deptId = clinicId;
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
     }
 
     public Long getDoctorId() {

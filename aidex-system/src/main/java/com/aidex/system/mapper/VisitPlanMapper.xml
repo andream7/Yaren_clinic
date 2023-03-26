@@ -3,7 +3,7 @@
 <mapper namespace="com.aidex.system.mapper.VisitPlanMapper">
   <resultMap id="BaseResultMap" type="com.aidex.system.entity.VisitPlan">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="dept_id" jdbcType="BIGINT" property="dept_id" />
+    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
     <result column="doctor_id" jdbcType="BIGINT" property="doctorId" />
     <result column="time" jdbcType="INTEGER" property="time" />
     <result column="day" jdbcType="TIMESTAMP" property="day" />

@@ -80,16 +80,14 @@ public interface IVisitPlanService {
     /**
      * 查找出诊列表
      *
-     * @param hospitalId 医院编号
-     * @param specialId  专科编号
-     * @param clinicId   门诊编号
+     * @param deptId   门诊编号
      * @param doctorId   医生编号
      * @param day        出诊日期
      * @param pageNum    第几页
      * @param pageSize   页大小
      * @return 出诊列表
      */
-    List<VisitPlanDTO> list(String hospitalId, Long specialId, Long clinicId, Long doctorId, Date day,
+    List<VisitPlanDTO> list(Long deptId, Long doctorId, Date day,
                             Integer pageNum, Integer pageSize);
 
     /**
@@ -100,7 +98,7 @@ public interface IVisitPlanService {
      * @param date       日期
      * @return 医生出诊信息
      */
-    List<VisitPlanResiduesDTO> getDoctorPlanByDate(String hospitalId, Long doctorId, Date date);
+    List<VisitPlanResiduesDTO> getDoctorPlanByDate(Long doctorId, Date date);
 
     /**
      * 获取某天出诊计划信息

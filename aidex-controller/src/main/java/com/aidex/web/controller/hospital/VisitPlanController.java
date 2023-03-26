@@ -36,7 +36,7 @@ public class VisitPlanController {
     @Resource
     private ISysUserService hospitalDoctorService;
 
-    @ApiOperation(value = "添加出诊计划", notes = "传入 出诊计划参数（医院编号、专科编号、门诊编号、诊室编号、医生编号、出诊时间段（1：上午，2：下午）、出诊日期）")
+    @ApiOperation(value = "添加出诊计划", notes = "传入 出诊计划参数（诊室编号、医生编号、出诊时间段（1：上午，2：下午）、出诊日期）")
     @PostMapping
     public CommonResult insertVisitPlan(@RequestBody VisitPlanParam param) {
 
@@ -59,7 +59,7 @@ public class VisitPlanController {
         return CommonResult.failed("服务器错误，请联系管理员！");
     }
 
-    @ApiOperation(value = "更新出诊计划", notes = "传入 出诊编号、出诊计划参数（医院编号、专科编号、门诊编号、诊室编号、医生编号、出诊日期）")
+    @ApiOperation(value = "更新出诊计划", notes = "传入 出诊编号、出诊计划参数（诊室编号、医生编号、出诊日期）")
     @ApiImplicitParam(name = "id", value = "出诊编号", paramType = "path", dataType = "Long", required = true)
     @PutMapping(value = "/{id}")
     public CommonResult updateVisitPlan(@PathVariable Long id, @RequestBody VisitPlanUpdateParam param) {
@@ -68,7 +68,7 @@ public class VisitPlanController {
             return CommonResult.validateFailed("不存在，该医生编号！");
         }
 
-        if (!sysDeptService.checkDeptExistUser(param.getSpecialId())) {
+        if (!sysDeptService.checkDeptExistUser(param.getDeptId())) {
             return CommonResult.validateFailed("不存在，该科室编号！");
         }
 
@@ -81,9 +81,7 @@ public class VisitPlanController {
 
     @ApiOperation(value = "搜索出诊计划", notes = "传入 医院编号、专科编号、门诊编号、出诊日期、第几页、页大小")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "hospitalId", value = "医院编号", paramType = "query", dataType = "Long"),
-            @ApiImplicitParam(name = "specialId", value = "专科编号", paramType = "query", dataType = "Long"),
-            @ApiImplicitParam(name = "outpatientId", value = "门诊编号", paramType = "query", dataType = "Long"),
+            @ApiImplicitParam(name = "deptId", value = "门诊编号", paramType = "query", dataType = "Long"),
             @ApiImplicitParam(name = "day", value = "出诊日期", paramType = "query", dataType = "String",
                     required = true),
             @ApiImplicitParam(name = "pageNum", value = "第几页", paramType = "query", dataType = "Integer",
@@ -92,14 +90,12 @@ public class VisitPlanController {
                     required = true),
     })
     @GetMapping(value = "/list")
-    public CommonResult<CommonPage<VisitPlanDTO>> searchVisitPlan(@RequestParam(required = false) String hospitalId,
-                                                                  @RequestParam(required = false) Long specialId,
-                                                                  @RequestParam(required = false) Long outpatientId,
+    public CommonResult<CommonPage<VisitPlanDTO>> searchVisitPlan(@RequestParam(required = false) Long deptId,
                                                                   @RequestParam String day,
                                                                   @RequestParam Integer pageNum,
                                                                   @RequestParam Integer pageSize) {
 
-        return CommonResult.success(CommonPage.restPage(planService.list(hospitalId, specialId, outpatientId, null,
+        return CommonResult.success(CommonPage.restPage(planService.list(deptId, null,
                 DateUtil.parse(day), pageNum, pageSize)));
     }
 
@@ -157,16 +153,12 @@ public class VisitPlanController {
 
     @ApiOperation(value = "根据医生编号、日期，获取出诊信息", notes = "传入 医生编号、日期")
     @GetMapping(value = "/doctor/date")
-    public CommonResult<List<VisitPlanResiduesDTO>> searchVisitPlanByDoctorAndDate(@RequestParam String hospitalId,
+    public CommonResult<List<VisitPlanResiduesDTO>> searchVisitPlanByDoctorAndDate(
                                                                                    @RequestParam Long doctorId,
                                                                                    @RequestParam String date) {
 
-        if (!sysDeptService.checkDeptExistUser(hospitalId)) {
-            return CommonResult.validateFailed("不存在，该科室编号！");
-        }
-
         Date time = DateUtil.parseDate(date);
 
-        return CommonResult.success(planService.getDoctorPlanByDate(hospitalId, doctorId, time));
+        return CommonResult.success(planService.getDoctorPlanByDate(doctorId, time));
     }
 }

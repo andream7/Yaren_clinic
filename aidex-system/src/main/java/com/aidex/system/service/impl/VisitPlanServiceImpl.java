@@ -170,20 +170,18 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
     /**
      * 获取医生出诊信息
      *
-     * @param hospitalId 医院编号
      * @param doctorId   医生编号
      * @param date       日期
      * @return 医生出诊信息
      */
     @Override
-    public List<VisitPlanResiduesDTO> getDoctorPlanByDate(String  hospitalId, Long doctorId, Date date) {
+    public List<VisitPlanResiduesDTO> getDoctorPlanByDate(Long doctorId, Date date) {
 
         // 获取当天出诊计划
         VisitPlanExample example = new VisitPlanExample();
 
         example.createCriteria()
                 .andDoctorIdEqualTo(doctorId)
-                .andHospitalIdEqualTo(hospitalId)
                 .andDayBetween(DateUtil.beginOfDay(date), DateUtil.endOfDay(date));
 
         List<VisitPlan> list = planMapper.selectByExample(example);
@@ -200,9 +198,7 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
     /**
      * 查找出诊列表
      *
-     * @param hospitalId   医院编号
-     * @param specialId    专科编号
-     * @param outpatientId 门诊编号
+     * @param deptId 门诊编号
      * @param doctorId     医生编号
      * @param day          出诊日期
      * @param pageNum      第几页
@@ -210,7 +206,7 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
      * @return 出诊列表
      */
     @Override
-    public List<VisitPlanDTO> list(String hospitalId, Long specialId, Long outpatientId, Long doctorId, Date day,
+    public List<VisitPlanDTO> list(Long deptId, Long doctorId, Date day,
                                    Integer pageNum, Integer pageSize) {
 
         PageHelper.startPage(pageNum, pageSize);
@@ -219,16 +215,8 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
 
         VisitPlanExample.Criteria criteria = example.createCriteria();
 
-        if (hospitalId != null) {
-            criteria.andHospitalIdEqualTo(hospitalId);
-        }
-
-        if (specialId != null) {
-            criteria.andSpecialIdEqualTo(specialId);
-        }
-
-        if (outpatientId != null) {
-            criteria.andOutpatientIdEqualTo(outpatientId);
+        if (deptId != null) {
+            criteria.andOutpatientIdEqualTo(deptId);
         }
 
         if (doctorId != null) {
