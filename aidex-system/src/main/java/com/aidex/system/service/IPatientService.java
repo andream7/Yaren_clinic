@@ -65,11 +65,13 @@ public interface IPatientService {
     /**
      * 通过关键词，查找用户信息列表
      *
+     * @param name     用户名
+     * @param phone    手机号
      * @param pageNum  第几页
      * @param pageSize 页大小
      * @return 用户信息列表
      */
-    List<PatientBasicInfo> list(Integer pageNum, Integer pageSize);
+    List<PatientBasicInfo> list(String name, String phone, Integer pageNum, Integer pageSize);
 
     /**
      * 判断用户信息是否存在

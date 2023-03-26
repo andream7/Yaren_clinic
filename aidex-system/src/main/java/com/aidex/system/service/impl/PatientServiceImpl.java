@@ -2,11 +2,14 @@ package com.aidex.system.service.impl;
 
 import com.aidex.system.domain.vo.PatientBasicInfo;
 import com.aidex.system.dto.param.UserRegisterParam;
+import com.aidex.system.entity.UserBasicInfoExample;
 import com.aidex.system.mapper.PatientBasicInfoMapper;
 import com.aidex.system.service.IPatientService;
+import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -44,10 +47,33 @@ public class PatientServiceImpl implements IPatientService {
         return patientInfoMapper.selectByPrimaryKey(id);
     }
 
+    /**
+     * 通过关键词，查找用户信息列表
+     *
+     * @param name     用户名
+     * @param phone    手机号
+     * @param pageNum  第几页
+     * @param pageSize 页大小
+     * @return 用户信息列表
+     */
     @Override
-    public List<PatientBasicInfo> list(Integer pageNum, Integer pageSize) {
+    public List<PatientBasicInfo> list(String name, String phone, Integer pageNum, Integer pageSize) {
+        // 分页器
+        PageHelper.startPage(pageNum, pageSize);
 
-        return patientInfoMapper.list(pageNum, pageSize);
+        UserBasicInfoExample example = new UserBasicInfoExample();
+
+        UserBasicInfoExample.Criteria criteria = example.createCriteria();
+
+        if (!StringUtils.isEmpty(name)) {
+            criteria.andNameLike("%" + name + "%");
+        }
+
+        if (!StringUtils.isEmpty(phone)) {
+            criteria.andPhoneLike("%" + name + "%");
+        }
+
+        return patientInfoMapper.selectByExample(example);
     }
 
     @Override

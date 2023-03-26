@@ -41,18 +41,22 @@ public class PatientController {
         return CommonResult.failed("服务器错误，请联系管理员！");
     }
 
-    @ApiOperation(value = "分页：搜索患者列表", notes = "传入 第几页、页大小")
+    @ApiOperation(value = "分页：搜索患者列表", notes = "传入 用户姓名、手机号、第几页、页大小")
     @PreAuthorize("@ss.hasPermi('system:user:list')")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "用户姓名", paramType = "query", dataType = "String"),
+            @ApiImplicitParam(name = "phone", value = "手机号", paramType = "query", dataType = "String"),
             @ApiImplicitParam(name = "pageNum", value = "第几页", paramType = "query", dataType = "Integer",
                     required = true),
             @ApiImplicitParam(name = "pageSize", value = "页大小", paramType = "query", dataType = "Integer",
                     required = true),
     })
     @GetMapping("/list")
-    public CommonResult<CommonPage<PatientBasicInfo>> getList(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+    public CommonResult<CommonPage<PatientBasicInfo>> getList(@RequestParam(required = false) String name,
+                                                              @RequestParam(required = false) String phone,
+                                                              @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
 
-        return CommonResult.success(CommonPage.restPage(patientService.list(pageNum, pageSize)));
+        return CommonResult.success(CommonPage.restPage(patientService.list(name, phone, pageNum, pageSize)));
     }
 
     /**

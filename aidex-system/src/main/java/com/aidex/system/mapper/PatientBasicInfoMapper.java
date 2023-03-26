@@ -18,7 +18,7 @@ public interface PatientBasicInfoMapper {
 
     int insertSelective(PatientBasicInfo record);
 
-    List<PatientBasicInfo> list(Integer pageNum, Integer pageSize);
+    List<PatientBasicInfo> selectByExample(UserBasicInfoExample example);
 
     PatientBasicInfo selectByPrimaryKey(Long id);
 
