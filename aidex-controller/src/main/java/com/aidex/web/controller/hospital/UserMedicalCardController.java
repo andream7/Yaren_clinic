@@ -21,7 +21,7 @@ import java.util.Optional;
 @Api(value = "用户模块", tags = "就诊卡信息接口")
 @RestController
 @CrossOrigin
-@RequestMapping("/hospital/user")
+@RequestMapping("/hospital/card")
 public class UserMedicalCardController {
 
     /**
@@ -48,7 +48,7 @@ public class UserMedicalCardController {
             @ApiImplicitParam(name = "pageSize", value = "页大小", paramType = "query", dataType = "Integer",
                     required = true),
     })
-    @RequestMapping(value = "/card/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult<CommonPage<UserMedicalCard>> searchMedicalCard(@RequestParam(required = false) String name,
                                                                        @RequestParam(required = false) String phone,
                                                                        @RequestParam(defaultValue = "0") Integer gender,
@@ -64,7 +64,7 @@ public class UserMedicalCardController {
     @ApiOperation(value = "添加就诊卡", notes = "传入 账号编号、就诊卡信息参数（关系类型、性别、姓名、手机号、证件号、出生日期）")
     @ApiImplicitParam(name = "accountId", value = "账号编号", paramType = "path", dataType = "Long",
             required = true)
-    @RequestMapping(value = "/card/{accountId}", method = RequestMethod.POST)
+    @PostMapping(value = "/{accountId}")
     public CommonResult insertMedicalCard(@PathVariable Long accountId, @RequestBody UserMedicalCardParam param) {
 
         if (!patientService.count(accountId)) {
@@ -85,7 +85,7 @@ public class UserMedicalCardController {
 
     @ApiOperation(value = "修改就诊卡", notes = "传入 关系编号、就诊卡更新信息参数（关系类型、性别、姓名、就诊卡编号）")
     @ApiImplicitParam(name = "relationId", value = "关系编号", paramType = "path", dataType = "Long", required = true)
-    @RequestMapping(value = "/card/{relationId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{relationId}", method = RequestMethod.PUT)
     public CommonResult updateMedicalCard(@PathVariable Long relationId, @RequestBody UserMedicalCardUpdateParam param) {
         if (!medicalCardService.countRelation(relationId)) {
             return CommonResult.validateFailed("不存在，该关系编号！");
@@ -100,7 +100,7 @@ public class UserMedicalCardController {
 
     @ApiOperation(value = "获取就诊卡", notes = "传入 就诊卡编号")
     @ApiImplicitParam(name = "cardId", value = "就诊卡编号", paramType = "path", dataType = "Long", required = true)
-    @RequestMapping(value = "/card/{cardId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{cardId}", method = RequestMethod.GET)
     public CommonResult updateMedicalCard(@PathVariable Long cardId) {
         if (!medicalCardService.countCardId(cardId)) {
             return CommonResult.validateFailed("不存在，该就诊卡编号！");
@@ -117,7 +117,7 @@ public class UserMedicalCardController {
 
     @ApiOperation(value = "获取用户就诊卡", notes = "传入 账号编号")
     @ApiImplicitParam(name = "accountId", value = "账号编号", paramType = "path", dataType = "Long", required = true)
-    @RequestMapping(value = "/card/list/{accountId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/list/{accountId}", method = RequestMethod.GET)
     public CommonResult<List<UserMedicalCardDTO>> listMedicalCard(@PathVariable Long accountId) {
         if (!patientService.count(accountId)) {
             return CommonResult.validateFailed("不存在，该账号编号！");
@@ -128,7 +128,7 @@ public class UserMedicalCardController {
 
     @ApiOperation(value = "删除就诊卡", notes = "传入 关系编号")
     @ApiImplicitParam(name = "relationId", value = "关系编号", paramType = "path", dataType = "Long", required = true)
-    @RequestMapping(value = "/card/{relationId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{relationId}", method = RequestMethod.DELETE)
     public CommonResult deleteMedicalCard(@PathVariable Long relationId) {
         if (!medicalCardService.countRelation(relationId)) {
             return CommonResult.validateFailed("不存在，该关系编号！");
@@ -145,7 +145,7 @@ public class UserMedicalCardController {
     @ApiOperation(value = "检查就诊卡数目是否超过限制", notes = "传入 账号编号")
     @ApiImplicitParam(name = "accountId", value = "账号编号", paramType = "path", dataType = "Long",
             required = true)
-    @RequestMapping(value = "/card/number/{accountId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/number/{accountId}", method = RequestMethod.GET)
     public CommonResult<Boolean> countMedicalCard(@PathVariable Long accountId) {
         if (!patientService.count(accountId)) {
             return CommonResult.validateFailed("不存在，该账号编号！");
@@ -157,7 +157,7 @@ public class UserMedicalCardController {
     @ApiOperation(value = "检查就诊卡信息是否存在", notes = "传入 身份证编号")
     @ApiImplicitParam(name = "identificationNumber", value = "身份证编号", paramType = "path", dataType = "String",
             required = true)
-    @RequestMapping(value = "/card/identification/{identificationNumber}", method = RequestMethod.GET)
+    @RequestMapping(value = "/identification/{identificationNumber}", method = RequestMethod.GET)
     public CommonResult<Boolean> countIdentificationNumber(@PathVariable String identificationNumber) {
         return CommonResult.success(medicalCardService.countIdentificationNumber(identificationNumber));
     }
