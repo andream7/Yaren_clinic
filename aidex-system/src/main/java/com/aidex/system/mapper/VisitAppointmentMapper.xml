@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aidex.system.mapper.VisitAppointmentMapper">
-  <resultMap id="BaseResultMap" type="com.aidex.system.entity.VisitAppointmentExample">
+  <resultMap id="BaseResultMap" type="com.aidex.system.entity.VisitAppointment">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="plan_id" jdbcType="BIGINT" property="planId" />
     <result column="card_id" jdbcType="BIGINT" property="cardId" />

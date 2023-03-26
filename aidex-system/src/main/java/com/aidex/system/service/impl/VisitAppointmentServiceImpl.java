@@ -12,10 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -336,7 +333,7 @@ public class VisitAppointmentServiceImpl implements IVisitAppointmentService {
                 DateUtil.beginOfDay(date), DateUtil.endOfDay(date));
 
         if (CollUtil.isEmpty(list)) {
-            return null;
+            return Collections.emptyList();
         }
 
         // 统计
@@ -441,7 +438,7 @@ public class VisitAppointmentServiceImpl implements IVisitAppointmentService {
         List<VisitAppointment> list = appointmentMapper.selectByExample(example);
 
         if (CollUtil.isEmpty(list)) {
-            return null;
+            return Collections.emptyList();
         }
 
         return list.stream()

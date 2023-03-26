@@ -16,11 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
-/**
- * @author YuJian95  clj9509@163.com
- * @date 2020/3/2
- */
-
 @Api(value = "用户模块", tags = "用户病例接口")
 @RestController
 @CrossOrigin
@@ -113,7 +108,7 @@ public class UserCaseController {
                     required = true),
     })
     @RequestMapping(value = "/case/list", method = RequestMethod.GET)
-    public CommonResult<CommonPage<UserCase>> listUserCase(@RequestParam(required = false) Long cardId,
+    public CommonResult<CommonPage<UserCase>> listUserCase(@RequestParam Long cardId,
                                                            @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
 
         return CommonResult.success(CommonPage.restPage(caseService.list(cardId, pageNum, pageSize)));

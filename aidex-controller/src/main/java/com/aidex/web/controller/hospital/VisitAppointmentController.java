@@ -16,11 +16,6 @@ import java.util.Date;
 
 import static com.aidex.system.dto.AppointmentEnum.*;
 
-/**
- * @author YuJian95  clj9509@163.com
- * @date 2020/3/19
- */
-
 @Api(value = "出诊模块", tags = "出诊预约接口")
 @RestController
 @CrossOrigin
@@ -128,17 +123,6 @@ public class VisitAppointmentController {
         }
 
         return CommonResult.success(CommonPage.restPage(appointmentService.listAllAppointment(cardId, patientId, pageNum, pageSize)));
-    }
-
-    @ApiOperation(value = "获取失信记录详情", notes = "传入预约编号")
-    @RequestMapping(value = "/miss/details", method = RequestMethod.GET)
-    public CommonResult<VisitAppointmentWithQueueDTO> listAllAppointment(@RequestParam Long appointmentId) {
-
-        if (!appointmentService.count(appointmentId)) {
-            return CommonResult.validateFailed("不存在，该预约编号！");
-        }
-
-        return CommonResult.success(appointmentService.getAppointmentDetails(appointmentId));
     }
 
     @ApiOperation(value = "获取就诊记录列表", notes = "传入就诊卡编号")
