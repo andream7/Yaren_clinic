@@ -70,12 +70,11 @@
   <sql id="Base_Column_List">
     id, name, avatar_url, phone, gmt_create, gmt_modified
   </sql>
-  <select id="countById" parameterType="java.lang.Long">
-    select count(id) form user_basic_info
-  </select>
-  <select id="countByPhoneId" parameterType="java.lang.Long" resultType="java.lang.Integer">
-    select count(phone) form user_basic_info
-    where phone == #{phone}
+  <select id="countByExample" parameterType="com.aidex.system.entity.UserBasicInfoExample" resultType="java.lang.Long">
+    select count(*) from user_basic_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from user_basic_info
@@ -132,7 +131,7 @@
       </if>
     </trim>
   </insert>
-  <select id="selectByExample" parameterType="com.aidex.system.domain.vo.PatientBasicInfo" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.aidex.system.entity.UserBasicInfoExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct

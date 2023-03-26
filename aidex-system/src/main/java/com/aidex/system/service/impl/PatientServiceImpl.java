@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -41,10 +42,23 @@ public class PatientServiceImpl implements IPatientService {
         return patientInfoMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    /**
+     * 获取普通用户信息
+     *
+     * @param phone 手机号
+     * @return 普通用户信息
+     */
     @Override
-    public PatientBasicInfo getById(Long id) {
+    public Optional<PatientBasicInfo> getOptionalByPhone(String phone) {
 
-        return patientInfoMapper.selectByPrimaryKey(id);
+        UserBasicInfoExample example = new UserBasicInfoExample();
+
+        example.createCriteria()
+                .andPhoneEqualTo(phone);
+
+        List<PatientBasicInfo> list = patientInfoMapper.selectByExample(example);
+
+        return Optional.ofNullable(list.get(0));
     }
 
     /**
@@ -76,16 +90,38 @@ public class PatientServiceImpl implements IPatientService {
         return patientInfoMapper.selectByExample(example);
     }
 
+    /**
+     * 判断用户信息是否存在
+     *
+     * @param id 用户编号
+     * @return 是否存在
+     */
     @Override
     public boolean count(Long id) {
 
-        return (patientInfoMapper.countById(id) > 0) ? true: false;
+        UserBasicInfoExample example = new UserBasicInfoExample();
+
+        example.createCriteria()
+                .andIdEqualTo(id);
+
+        return patientInfoMapper.countByExample(example) > 0;
     }
 
+    /**
+     * 判断用户信息是否存在
+     *
+     * @param phone 手机号
+     * @return 是否存在
+     */
     @Override
-    public boolean countByPhoneId(String id) {
+    public boolean countByPhone(String phone) {
 
-        return (patientInfoMapper.countByPhoneId(id) != "") ? true: false;
+        UserBasicInfoExample example = new UserBasicInfoExample();
+
+        example.createCriteria()
+                .andPhoneEqualTo(phone);
+
+        return patientInfoMapper.countByExample(example) > 0;
     }
 
     /**

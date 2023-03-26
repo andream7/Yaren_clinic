@@ -6,9 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface PatientBasicInfoMapper {
-    long countById(Long id);
-
-    String countByPhoneId(String phone);
+    long countByExample(UserBasicInfoExample example);
 
     int deleteByExample(UserBasicInfoExample example);
 

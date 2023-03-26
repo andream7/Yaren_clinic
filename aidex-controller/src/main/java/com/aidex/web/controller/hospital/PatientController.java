@@ -28,9 +28,9 @@ public class PatientController {
     private IPatientService patientService;
 
     @ApiOperation(value = "用户账号注册", notes = "传入 注册对象参数（姓名、头像、手机号、密码）")
-    @PostMapping(value = "/register")
+    @PostMapping
     public CommonResult registerUserAccount(@RequestBody UserRegisterParam param) {
-        if (patientService.countByPhoneId(param.getPhone())) {
+        if (patientService.countByPhone(param.getPhone())) {
             return CommonResult.validateFailed("该账号名称已存在！");
         }
 
@@ -62,14 +62,13 @@ public class PatientController {
     /**
      * 根据患者编号获取详细信息
      */
-    @ApiOperation(value = "根据患者编号获取患者信息", notes = "传入 用户编号")
-    @ApiImplicitParam(name = "id", value = "患者编号", paramType = "path", dataType = "Long",
-            required = true)
+    @ApiOperation(value = "根据患者电话获取患者信息", notes = "传入 患者电话")
+    @ApiImplicitParam(name = "phone", value = "患者电话", paramType = "path", dataType = "String", required = true)
     @PreAuthorize("@ss.hasPermi('system:user:query')")
-    @GetMapping(value = {"/{id}"})
-    public CommonResult<PatientBasicInfo> getInfo(@PathVariable Long id) {
+    @GetMapping(value = {"/{phone}"})
+    public CommonResult<PatientBasicInfo> getInfo(@PathVariable String phone) {
 
-        return CommonResult.success(patientService.getById(id));
+        return CommonResult.success(patientService.getOptionalByPhone(phone).get());
     }
 
     /**

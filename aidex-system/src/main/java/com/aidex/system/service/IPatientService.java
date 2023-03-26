@@ -4,6 +4,7 @@ import com.aidex.system.domain.vo.PatientBasicInfo;
 import com.aidex.system.dto.param.UserRegisterParam;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 普通用户基础信息接口
@@ -57,10 +58,10 @@ public interface IPatientService {
     /**
      * 获取普通用户信息
      *
-     * @param id 用户编号
+     * @param phone 手机号
      * @return 普通用户信息
      */
-    PatientBasicInfo getById(Long id);
+    Optional<PatientBasicInfo> getOptionalByPhone(String phone);
 
     /**
      * 通过关键词，查找用户信息列表
@@ -81,5 +82,11 @@ public interface IPatientService {
      */
     boolean count(Long id);
 
-    boolean countByPhoneId(String phone);
+    /**
+     * 判断用户信息是否存在
+     *
+     * @param phone 手机号
+     * @return 是否存在
+     */
+    boolean countByPhone(String phone);
 }
