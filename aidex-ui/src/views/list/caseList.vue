@@ -6,20 +6,20 @@
         <a-form :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-row :gutter="48">
             <a-col :md="6" :sm="24">
-              <a-form-item label="任务名称">
-                <a-input v-model="queryParam.jobName" placeholder="请输入任务名称" allow-clear @keyup.enter.native="handleQuery"/>
+              <a-form-item label="就诊人">
+                <a-input v-model="queryParam.jobName" placeholder="请输入就诊人" allow-clear @keyup.enter.native="handleQuery"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
-              <a-form-item label="任务组名">
-                <a-input v-model="queryParam.jobGroup" placeholder="请选择任务组名" allow-clear @keyup.enter.native="handleQuery"/>
+              <a-form-item label="医生姓名">
+                <a-input v-model="queryParam.jobGroup" placeholder="请输入医生姓名" allow-clear @keyup.enter.native="handleQuery"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
                 label="
-              任务状态">
-                <a-select placeholder="请选择任务状态" v-model="queryParam.status" style="width: 100%" allow-clear>
+              是否需要复诊">
+                <a-select placeholder="请选择是否需要复诊" v-model="queryParam.status" style="width: 100%" allow-clear>
                   <a-select-option v-for="(d, index) in statusOptions" :key="index" :value="d.dictValue">{{ d.dictLabel }}</a-select-option>
                 </a-select>
               </a-form-item>
@@ -131,10 +131,11 @@
 
 <script>
 
-import { listJob, delJob, exportJob, runJob, changeJobStatus } from '@/api/monitor/job'
+import { delJob, exportJob, runJob, changeJobStatus } from '@/api/monitor/job'
 import CreateForm from './createForm'
 import ViewForm from './viewForm'
 import AdvanceTable from '@/components/pt/table/AdvanceTable'
+import { listUser } from '@/api/system/user'
 export default {
   name: 'Job',
   components: {
@@ -172,43 +173,49 @@ export default {
       },
       columns: [
         {
-          title: '任务编号',
+          title: '病历编号',
           dataIndex: 'jobId',
           width: '70px',
           align: 'center'
         },
         {
-          title: '任务名称',
+          title: '就诊人',
           dataIndex: 'jobName',
           ellipsis: true,
           align: 'center'
         },
         {
-          title: '任务组名',
+          title: '就诊时间',
           dataIndex: 'jobGroup',
           scopedSlots: { customRender: 'jobGroup' },
           align: 'center'
         },
         {
-          title: '调用目标字符串',
+          title: '科室',
           dataIndex: 'invokeTarget',
           ellipsis: true,
           align: 'center'
         },
         {
-          title: 'cron执行表达式',
+          title: '医生姓名',
           dataIndex: 'cronExpression',
           ellipsis: true,
           align: 'center'
         },
         {
-          title: '状态',
+          title: '疾病类型',
           dataIndex: 'status',
           scopedSlots: { customRender: 'status' },
           align: 'center'
         },
         {
-          title: '备注',
+          title: '是否需要复诊',
+          dataIndex: 'remark',
+          width: '150px',
+          ellipsis: true
+        },
+        {
+          title: '病情描述',
           dataIndex: 'remark',
           ellipsis: true
         },
@@ -240,9 +247,9 @@ export default {
     /** 查询定时任务列表 */
     getList () {
       this.loading = true
-      listJob(this.queryParam).then(response => {
-          this.list = response.rows
-          this.total = response.total
+      listUser(this.queryParam).then(response => {
+          // this.list = response.rows
+          // this.total = response.total
           this.loading = false
         }
       )

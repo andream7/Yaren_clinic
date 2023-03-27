@@ -6,20 +6,20 @@
         <a-form :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-row :gutter="48">
             <a-col :md="6" :sm="24">
-              <a-form-item label="任务名称">
-                <a-input v-model="queryParam.jobName" placeholder="请输入任务名称" allow-clear @keyup.enter.native="handleQuery"/>
+              <a-form-item label="患者名称">
+                <a-input v-model="queryParam.jobName" placeholder="请输入患者名称" allow-clear @keyup.enter.native="handleQuery"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
-              <a-form-item label="任务组名">
-                <a-input v-model="queryParam.jobGroup" placeholder="请选择任务组名" allow-clear @keyup.enter.native="handleQuery"/>
+              <a-form-item label="证件号码">
+                <a-input v-model="queryParam.jobGroup" placeholder="请输入证件号码" allow-clear @keyup.enter.native="handleQuery"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
                 label="
-              任务状态">
-                <a-select placeholder="请选择任务状态" v-model="queryParam.status" style="width: 100%" allow-clear>
+              患者状态">
+                <a-select placeholder="请选择患者状态" v-model="queryParam.status" style="width: 100%" allow-clear>
                   <a-select-option v-for="(d, index) in statusOptions" :key="index" :value="d.dictValue">{{ d.dictLabel }}</a-select-option>
                 </a-select>
               </a-form-item>
@@ -209,7 +209,7 @@ export default {
           align: 'center'
         },
         {
-          title: '备注',
+          title: '患者状态',
           dataIndex: 'remark',
           ellipsis: true
         },

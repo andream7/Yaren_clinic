@@ -242,7 +242,7 @@ export default {
           dataIndex: 'operation',
           width: '150px',
           scopedSlots: { customRender: 'operation' }
-        },
+        }
       ]
     }
   },
