@@ -132,8 +132,8 @@
 <script>
 
 import { listJob, delJob, exportJob, runJob, changeJobStatus } from '@/api/monitor/job'
-import CreateForm from './modules/CreateForm'
-import ViewForm from './modules/ViewForm'
+import CreateForm from './createForm'
+import ViewForm from './viewForm'
 import AdvanceTable from '@/components/pt/table/AdvanceTable'
 export default {
   name: 'Job',
