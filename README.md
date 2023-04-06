@@ -10,3 +10,12 @@ Yaren Clinic is a web application designed to help a small clinic manage their p
 ## Technologies Used
 - Backend: Java, SpringBoot, MySQL
 - Frontend: Vue.js
+
+## Getting Started
+To run the application on your local machine, follow these steps:
+
+- Clone the repository:
+
+```bash
+git clone https://github.com/andream7/Yaren_clinic.git
+```
