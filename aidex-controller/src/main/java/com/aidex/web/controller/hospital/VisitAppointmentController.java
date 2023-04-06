@@ -8,6 +8,7 @@ import com.aidex.system.dto.*;
 import com.aidex.system.dto.param.VisitAppointmentParam;
 import com.aidex.system.entity.VisitAppointment;
 import com.aidex.system.service.*;
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,14 @@ public class VisitAppointmentController {
 
     @Resource
     private ISysUserService userService;
+
+//    @ApiOperation(value = " 获取此模块基础信息", notes = "")
+//    @GetMapping("/init")
+//    public CommonResult initInfo(){
+//        JSONObject object = new JSONObject();
+//        object.put();
+//        return CommonResult.success(object);
+//    }
 
     @ApiOperation(value = "添加预约信息", notes = "传入 预约参数对象（出诊编号、就诊卡号、账号编号）")
     @PostMapping

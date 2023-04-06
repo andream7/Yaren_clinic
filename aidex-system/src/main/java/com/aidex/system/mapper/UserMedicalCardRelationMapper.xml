@@ -70,6 +70,7 @@
   <sql id="Base_Column_List">
     id, type, account_id, card_id, gmt_create, gmt_modified
   </sql>
+
   <select id="selectByExample" parameterType="com.aidex.system.entity.UserMedicalCardRelationExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -84,6 +85,7 @@
       order by ${orderByClause}
     </if>
   </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

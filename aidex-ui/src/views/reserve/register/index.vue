@@ -1,0 +1,147 @@
+<template>
+  <div>
+    <a-form class="ant-advanced-search-form" :form="formData" @submit="handleSummit">
+      <a-row :gutter="24">
+        <a-col
+          :span="8"
+        >
+          <a-radio-group name="radioGroup"  v-model:value="formData.status">
+            <a-radio :value="1">全部</a-radio>
+            <a-radio :value="2">未开始</a-radio>
+            <a-radio :value="3">失约</a-radio>
+            <a-radio :value="4">取消</a-radio>
+            <a-radio :value="5">已完成</a-radio>
+          </a-radio-group>
+        </a-col>
+        <a-col
+          :span="8"
+        >
+          <label>选择日期：</label>
+          <a-range-picker v-model:value="dateRange"/>
+        </a-col>
+        <a-col
+          :span="8"
+        >
+          <a-input-group compact>
+            <a-select default-value="医生">
+              <a-select-option value="doctorName">
+                医生
+              </a-select-option>
+              <a-select-option value="patientName">
+                患者
+              </a-select-option>
+              <a-select-option value="clinicName">
+                诊室
+              </a-select-option>
+            </a-select>
+            <a-input style="width: 50%" placeholder="可输入查询内容"/>
+          </a-input-group>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="24" :style="{ textAlign: 'right' }">
+          <a-button type="primary" html-type="submit">
+            查询
+          </a-button>
+        </a-col>
+      </a-row>
+    </a-form>
+    <br/>
+    <a-table :dataSource="tableData" :columns="columns" bordered :row-key="record => record.name">
+      <a slot="ope" @click="showModal" style="color: #7cb305">🔎详情</a>
+    </a-table>
+
+    <a-modal
+      width="1000px"
+      v-model:visible="showOpe"
+      title="挂号详情"
+      ok-text="确认"
+      @ok="hideModal"
+    >
+      <Detail></Detail>
+    </a-modal>
+  </div>
+</template>
+
+<script>
+import Detail from "@/views/reserve/register/detail";
+export default {
+  name: 'index',
+  components: {Detail},
+  data() {
+    return {
+      dateRange: null,
+      tableData: [],
+      showOpe:false,
+      selectValue: null,
+      formData: {
+        status: 1,
+
+      },
+      columns: [
+        {
+          title: '患者姓名',
+          dataIndex: 'nameP',
+          align: 'center'
+        },
+        {
+          title: '医生姓名',
+          dataIndex: 'nameD',
+          align: 'center'
+        },
+        {
+          title: '诊室名称',
+          dataIndex: 'nameR',
+          align: 'center'
+        },
+        {
+          title: '时间段',
+          dataIndex: 'period',
+          align: 'center'
+        },
+        {
+          title: '状态',
+          dataIndex: 'status',
+          align: 'center'
+        },
+        {
+          title: '出诊时间',
+          dataIndex: 'time',
+          align: 'center'
+        },
+        {
+          title: '操作',
+          dataIndex: 'operation',
+          align: 'center',
+          scopedSlots: { customRender: 'ope' },
+        }
+      ]
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+    handleSummit() {
+
+    },
+    showModal(){
+      this.showOpe = true
+    },
+    hideModal() {
+      this.showOpe = false
+    }
+
+
+  },
+  created() {
+    let fake = {"nameP":"小红","nameD":"a滨","nameR":"口腔","period":"上午","status":"已完成","time":"2023/2/23"}
+    this.tableData.push(fake)
+  }
+
+}
+</script>
+
+<style scoped>
+
+</style>
