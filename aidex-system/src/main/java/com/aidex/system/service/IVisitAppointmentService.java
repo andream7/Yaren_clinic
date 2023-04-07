@@ -1,7 +1,10 @@
 package com.aidex.system.service;
 
+import com.aidex.system.domain.vo.VisitAppointmentDetailVo;
+import com.aidex.system.domain.vo.VisitAppointmentVo;
 import com.aidex.system.dto.*;
 import com.aidex.system.dto.param.VisitAppointmentParam;
+import com.aidex.system.dto.query.VisitAppointmentQueryModel;
 import com.aidex.system.entity.VisitAppointment;
 
 import java.util.Date;
@@ -115,6 +118,8 @@ public interface IVisitAppointmentService {
      */
     List<VisitAppointmentDTO> listNormalAppointment(Long cardId, Integer pageNum, Integer pageSize);
 
+    List<VisitAppointmentVo> listMyAppointments(VisitAppointmentQueryModel queryModel);
+
     /**
      * 获取预约记录列表
      *
@@ -134,6 +139,7 @@ public interface IVisitAppointmentService {
      */
     VisitAppointmentWithCaseDTO getVisitAppointmentWithCaseDTO(Long id);
 
+    VisitAppointmentDetailVo getVisitAppointmentDetail(Long id);
     /**
      * 获取候诊队列信息
      *

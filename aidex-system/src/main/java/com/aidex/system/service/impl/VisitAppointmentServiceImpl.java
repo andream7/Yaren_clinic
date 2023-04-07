@@ -2,8 +2,11 @@ package com.aidex.system.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
+import com.aidex.system.domain.vo.VisitAppointmentDetailVo;
+import com.aidex.system.domain.vo.VisitAppointmentVo;
 import com.aidex.system.dto.*;
 import com.aidex.system.dto.param.VisitAppointmentParam;
+import com.aidex.system.dto.query.VisitAppointmentQueryModel;
 import com.aidex.system.entity.*;
 import com.aidex.system.mapper.VisitAppointmentMapper;
 import com.aidex.system.service.*;
@@ -45,6 +48,9 @@ public class VisitAppointmentServiceImpl implements IVisitAppointmentService {
 
     @Resource
     private IUserMedicalCardService userMedicalCardService;
+
+    @Resource
+    private ISysUserService userService;
 
     /**
      * 获取已取号的数目
@@ -368,6 +374,26 @@ public class VisitAppointmentServiceImpl implements IVisitAppointmentService {
         return dto;
     }
 
+    @Override
+    public VisitAppointmentDetailVo getVisitAppointmentDetail(Long id) {
+        VisitAppointmentInfo info = appointmentMapper.selectDetails(id);
+        VisitAppointmentDetailVo detailVo = new VisitAppointmentDetailVo();
+        detailVo.setCardId( info.getCard_id());
+
+        detailVo.setDay(info.getDay());
+        detailVo.setStatus(info.getStatus());
+        detailVo.setPeriod(info.getTime_period());
+        detailVo.setDeptName(sysDeptService.selectDeptByDeptCode(String.valueOf(info.getDept_id())).getDeptName());
+        detailVo.setDoctorName(userService.get(String.valueOf(info.getDoctor_id())).getName());
+
+        UserMedicalCard userMedicalCard = userMedicalCardService.getOptional(info.getCard_id()).get();
+        detailVo.setName(userMedicalCard.getName());
+        detailVo.setSex(userMedicalCard.getGender() == 0 ?"男":"女");
+        detailVo.setBirthday(userMedicalCard.getBirthDate());
+        detailVo.setPhone(userMedicalCard.getPhone());
+        detailVo.setIdentityID(userMedicalCard.getIdentificationNumber());
+        return detailVo;
+    }
     /**
      * 获取预约记录列表
      *
@@ -443,6 +469,15 @@ public class VisitAppointmentServiceImpl implements IVisitAppointmentService {
 
         return list.stream()
                 .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<VisitAppointmentVo> listMyAppointments(VisitAppointmentQueryModel queryModel){
+        PageHelper.startPage(queryModel.getPageNum(), queryModel.getPageSize());
+        List<VisitAppointmentInfo> result = appointmentMapper.selectByExamplePlus(queryModel);
+        return result.stream()
+                .map(this::convertPlus)
                 .collect(Collectors.toList());
     }
 
@@ -642,6 +677,21 @@ public class VisitAppointmentServiceImpl implements IVisitAppointmentService {
         dto.setName(userMedicalCardService.getName(appointment.getCardId()));
 
         return dto;
+    }
+
+    private VisitAppointmentVo convertPlus(VisitAppointmentInfo info) {
+
+        VisitAppointmentVo vo = new VisitAppointmentVo();
+        vo.setAppointmentId( info.getId());
+
+        vo.setDay(info.getDay());
+        vo.setStatus(info.getStatus());
+        vo.setTime(info.getTime_period());
+        vo.setPatientName(userMedicalCardService.getName( info.getCard_id()));
+        vo.setDoctorId((int) info.getDoctor_id());
+        vo.setDoctorName(userService.get(String.valueOf(vo.getDoctorId())).getName());
+        vo.setClinicName(sysDeptService.selectDeptByDeptCode(String.valueOf(info.getDept_id())).getDeptName());
+        return vo;
     }
 
     /**

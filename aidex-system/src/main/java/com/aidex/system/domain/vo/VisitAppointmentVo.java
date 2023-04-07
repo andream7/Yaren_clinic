@@ -21,7 +21,7 @@ public class VisitAppointmentVo implements Serializable {
     private String clinicName;
 
     @ApiModelProperty(value = "医生ID")
-    private int doctorId;
+    private long doctorId;
 
     @ApiModelProperty(value = "医生名称")
     private String doctorName;

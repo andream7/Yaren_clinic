@@ -3,10 +3,12 @@ package com.aidex.system.dto.query;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.util.Date;
 
 @ApiModel(value = "VisitAppointmentQueryModel", description = "出诊预约查询")
+@Data
 public class VisitAppointmentQueryModel extends BaseQueryModel{
 
     @ApiModelProperty(value = "诊室名称")
@@ -15,6 +17,7 @@ public class VisitAppointmentQueryModel extends BaseQueryModel{
     @ApiModelProperty(value = "医生名称")
     private String doctorName;
 
+    private String userId;
     @ApiModelProperty(value = "患者名称")
     private String name;
 

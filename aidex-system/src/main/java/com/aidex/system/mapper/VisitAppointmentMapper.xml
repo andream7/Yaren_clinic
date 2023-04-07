@@ -86,6 +86,22 @@
       order by ${orderByClause}
     </if>
   </select>
+
+  <select id="selectByExamplePlus" parameterType="com.aidex.system.dto.query.VisitAppointmentQueryModel" resultType="com.aidex.system.dto.VisitAppointmentInfo">
+    select va.id, va.card_id, vp.doctor_id, vp.dept_id,vp.`day`,va.`status`,va.time_period
+    from visit_appointment as va LEFT JOIN visit_plan as vp on vp.id = va.plan_id
+    ORDER BY vp.`day` desc
+
+  </select>
+
+  <select id="selectDetails" resultType="com.aidex.system.dto.VisitAppointmentInfo">
+    select va.id, va.card_id, vp.doctor_id, vp.dept_id,vp.`day`,va.`status`,va.time_period
+    from visit_appointment as va LEFT JOIN visit_plan as vp on vp.id = va.plan_id
+    where va.id = #{id}
+  </select>
+
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

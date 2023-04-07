@@ -4,8 +4,13 @@ import cn.hutool.core.date.DateUtil;
 
 import com.aidex.common.core.domain.api.CommonPage;
 import com.aidex.common.core.domain.api.CommonResult;
+import com.aidex.common.core.domain.entity.SysUser;
+import com.aidex.framework.cache.UserUtils;
+import com.aidex.system.domain.vo.VisitAppointmentDetailVo;
+import com.aidex.system.domain.vo.VisitAppointmentVo;
 import com.aidex.system.dto.*;
 import com.aidex.system.dto.param.VisitAppointmentParam;
+import com.aidex.system.dto.query.VisitAppointmentQueryModel;
 import com.aidex.system.entity.VisitAppointment;
 import com.aidex.system.service.*;
 import com.alibaba.fastjson.JSONObject;
@@ -38,13 +43,6 @@ public class VisitAppointmentController {
     @Resource
     private ISysUserService userService;
 
-//    @ApiOperation(value = " 获取此模块基础信息", notes = "")
-//    @GetMapping("/init")
-//    public CommonResult initInfo(){
-//        JSONObject object = new JSONObject();
-//        object.put();
-//        return CommonResult.success(object);
-//    }
 
     @ApiOperation(value = "添加预约信息", notes = "传入 预约参数对象（出诊编号、就诊卡号、账号编号）")
     @PostMapping
@@ -145,15 +143,26 @@ public class VisitAppointmentController {
 
         return CommonResult.success(CommonPage.restPage(appointmentService.listNormalAppointment(cardId, pageNum, pageSize)));
     }
+
+    @ApiOperation(value = "获取就诊记录列表", notes = "支持高级搜索")
+    @RequestMapping(value = "/myList", method = RequestMethod.POST)
+    public CommonResult<CommonPage<VisitAppointmentVo>> listAppointmentPlus(@RequestBody VisitAppointmentQueryModel queryModel) {
+        SysUser currentUser = UserUtils.getUser();
+        if(!currentUser.isAdmin()){   //非管理员只能查看自己记录
+            queryModel.setUserId(currentUser.getId());
+        }
+        return CommonResult.success(CommonPage.restPage(appointmentService.listMyAppointments(queryModel)));
+    }
+
     @ApiOperation(value = "查看就诊记录详情", notes = "传入就诊卡编号")
-    @RequestMapping(value = "/details", method = RequestMethod.GET)
-    public CommonResult<VisitAppointmentWithCaseDTO> getAppointmentDetails(@RequestParam Long appointmentId) {
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    public CommonResult<VisitAppointmentDetailVo> getAppointmentDetails(@RequestParam long appointmentId) {
 
         if (!appointmentService.count(appointmentId)) {
             return CommonResult.validateFailed("不存在，该预约编号！");
         }
 
-        return CommonResult.success(appointmentService.getVisitAppointmentWithCaseDTO(appointmentId));
+        return CommonResult.success(appointmentService.getVisitAppointmentDetail(appointmentId));
     }
 
     @ApiOperation(value = "查看当天排队信息", notes = "传入就诊卡编号、账号编号")
