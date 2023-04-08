@@ -1,43 +1,63 @@
 <template>
   <div>
+    <label>-</label>
+    <a-radio-group :default-value="0" button-style="solid" v-model="offsetWeek" @change="changeWeek">
+      <a-radio-button :value="-1">
+        上一周
+      </a-radio-button>
+      <a-radio-button :value="0">
+        本周
+      </a-radio-button>
+      <a-radio-button :value="1">
+        下一周
+      </a-radio-button>
+    </a-radio-group>
+
+    <a-divider/>
+
     <a-table
       class="ant-table-striped"
       :rowClassName="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"
       bordered :columns="columns" :row-key="record => record.name" :data-source="tableData" :scroll="{ x: 1500 }">
-      <a slot="ope" @click="showModal">操作</a>
+      <a slot="ope" slot-scope="text, record" @click="showModal(record.id)">操作</a>
+      <template slot="title0">{{ this.columnNames[0] }}</template>
+      <template slot="title1">{{ this.columnNames[1] }}</template>
+      <template slot="title2">{{ this.columnNames[2] }}</template>
+      <template slot="title3">{{ this.columnNames[3] }}</template>
+      <template slot="title4">{{ this.columnNames[4] }}</template>
+      <template slot="title5">{{ this.columnNames[5] }}</template>
+      <template slot="title6">{{ this.columnNames[6] }}</template>
     </a-table>
+
     <a-modal
       width="1000px"
       v-model:visible="showOpe"
-      title=""
+      title="查看排班"
       ok-text="确认"
       cancel-text=""
       @ok="hideModal"
     >
-      <Plan></Plan>
+      <Plan :myinfo = "this.myinfo"></Plan>
     </a-modal>
   </div>
 
 </template>
 
 <script>
-const columnNames = [
-  " 星期一",
-  " 星期二",
-  " 星期三",
-  " 星期四",
-  " 星期五",
-  " 星期六",
-  " 星期日"
-]
 import Plan from "@/views/reserve/schedule/plan";
+import {getPlan, getPlanList} from "@/api/reserve/schedule";
+
 export default {
   name: 'index',
   components: {Plan},
   data() {
     return {
+      offsetWeek: 0,
+      begin: {},
+      end: {},
+      myinfo: {},
       tableData: [],
-
+      columnNames: [],
       columns: [
         {
           title: '医生名字',
@@ -50,7 +70,9 @@ export default {
           key: '2'
         },
         {
-          title: columnNames[0],
+          scopedSlots: {
+            title: 'title0'
+          },
           dataIndex: 'day0',
           key: '3',
           children: [
@@ -67,7 +89,10 @@ export default {
           ]
         },
         {
-          title: columnNames[1],
+          //title: this.columnNames[1],
+          scopedSlots: {
+            title: 'title1'
+          },
           dataIndex: 'day1',
           children: [
             {
@@ -84,7 +109,10 @@ export default {
           key: '6'
         },
         {
-          title: columnNames[2],
+          //title: this.columnNames[2],
+          scopedSlots: {
+            title: 'title2'
+          },
           dataIndex: 'day2',
           children: [
             {
@@ -101,7 +129,10 @@ export default {
           key: '11'
         },
         {
-          title: columnNames[3],
+          //title: this.columnNames[3],
+          scopedSlots: {
+            title: 'title3'
+          },
           dataIndex: 'day3',
           children: [
             {
@@ -118,7 +149,9 @@ export default {
           key: '14'
         },
         {
-          title: columnNames[4],
+          scopedSlots: {
+            title: 'title4'
+          },
           dataIndex: 'day4',
           children: [
             {
@@ -135,7 +168,9 @@ export default {
           key: '17'
         },
         {
-          title: columnNames[5],
+          scopedSlots: {
+            title: 'title5'
+          },
           dataIndex: 'day5',
           children: [
             {
@@ -152,7 +187,10 @@ export default {
           key: '20'
         },
         {
-          title: columnNames[6],
+          //title: this.columnNames[6],
+          scopedSlots: {
+            title: 'title6'
+          },
           dataIndex: 'day6',
           children: [
             {
@@ -174,33 +212,85 @@ export default {
           key: '24',
           fixed: 'right',
           width: 100,
-          scopedSlots: { customRender: 'ope' }
+          scopedSlots: {customRender: 'ope'}
 
         }
       ],
       showOpe: false
     }
   },
-  methods : {
-    showModal(){
+  methods: {
+    showModal(id) {
       this.showOpe = true
+      let query = {};
+      query.begin = new Date("2023-03-26")
+      query.end = this.end
+      query.doctorId = id
+      getPlanList(query).then(rep => {
+        console.log(rep)
+        this.myinfo.info = rep.data.list
+
+      })
     },
     hideModal() {
       this.showOpe = false
+    },
+    changeWeek() {
+      this.getCurrentWeekDates(this.offsetWeek)
+      this.getInfo()
+    },
+    getCurrentWeekDates(off) {
+      const currentDate = new Date();
+      const currentDay = currentDate.getDay(); // 当前星期几，0代表周日，1代表周一，以此类推
+      const weekStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDay + 7 * off); // 当前周的起始日期
+      const weekDates = [];
+
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate() + i);
+        if (i === 0) {
+          this.begin = date;
+        } else if (i === 6) {
+          this.end = date;
+        }
+        const dateString = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 星期${['日', '一', '二', '三', '四', '五', '六'][date.getDay()]}`;
+        weekDates.push(dateString);
+      }
+
+      this.columnNames = weekDates;
+    },
+    getInfo() {
+      let query = {};
+      query.begin = this.begin
+      query.end = this.end
+      getPlanList(query)
+        .then(response => {
+          console.log(response)
+          let myBody = {};
+          for (let item of response.data.list) {
+            if (!myBody.hasOwnProperty(item.doctorId)) {
+              myBody[item.doctorId] = []
+            }
+            myBody[item.doctorId].push(item)
+
+          }
+          for (let item of Object.keys(myBody)) {
+            let line = {};
+            for (let entry of myBody[item]) {
+              line.id = entry.doctorId
+              line.name = entry.doctorName
+              line.c = entry.deptName
+              let pam = (entry.period == 1 ? "morning" : "afternoon") + (new Date(entry.day).getDay())
+
+              line[pam] = entry.num
+            }
+            this.tableData.push(line)
+          }
+        })
     }
   },
   created() {
-    const fake = {"name":"黄滨","c":"内科",
-      "morning0":"0","afternoon0":"7",
-      "morning1":"0","afternoon1":"4",
-      "morning2":"0","afternoon2":"2",
-      "morning3":"0","afternoon3":"3",
-      "morning4":"1","afternoon4":"6",
-      "morning5":"2","afternoon5":"8",
-      "morning6":"3","afternoon6":"9"
-    }
-    this.tableData.push(fake)
-    //this.tableData.push(fake)
+    this.getCurrentWeekDates(0)
+    this.getInfo()
   }
 }
 </script>

@@ -2,20 +2,20 @@
   <div>
     <a-row type="flex">
       <a-col :flex="2">
-        <p>黄滨医生排班详情</p>
+        <p>{{this.doctorName}}医生排班详情</p>
         <p>{{ getNowFormatDate(currentTime) }}</p>
         <p>{{ getWeekDay(currentTime) }}</p>
         <a-space direction="vertical">
           <a-card title="上午" style="width: 300px">
             <p>接诊时间：8:00 - 12:00</p>
             <p>号源数：20</p>
-            <p>接诊数：10</p>
+            <p>接诊数：{{this.mor}}</p>
           </a-card>
           <a-divider style="border-color: #7cb305" dashed />
           <a-card title="下午" style="width: 300px">
             <p>接诊时间：14:00 - 18:00</p>
             <p>号源数：20</p>
-            <p>接诊数：10</p>
+            <p>接诊数：{{this.aft}}</p>
           </a-card>
         </a-space>
       </a-col>
@@ -93,10 +93,16 @@
 import moment from "moment";
 
 export default {
-  name: 'Plan',
+  name: 'plan',
+  props: {
+    myinfo:{},
+    doctorName:"",
+    mor:0,
+    aft:0
+  },
   data() {
     return {
-      currentTime: moment() //当前时间，日历是需要moment
+      currentTime: moment(), //当前时间，日历是需要moment
     };
   },
   created() {
@@ -105,7 +111,8 @@ export default {
   methods: {
     onSelectFn(value) {
       //实际使用可能会需要获取最新数据。
-      // console.log(value.format('YYYY-MM-DD'),"aaaa")
+      console.log(value.format('YYYY-MM-DD'), this.myinfo)
+      this.flag = false
     },
     onPanelChangeFn(value) {
       // console.log(value,"bbbb")
@@ -172,6 +179,17 @@ export default {
   mounted() {
 
   },
+  watch:{
+    // 被侦听的变量count
+    myinfo(){
+        console.log('info 发生了变化');
+    },
+    flag(){
+      console.log('flag 发生了变化');
+    }
+  },
+
+
 };
 </script>
 
