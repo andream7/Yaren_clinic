@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
 
 public interface VisitPlanMapper {
 
-    List<VisitPlanInfo> countByGroup (VisitPlanQueryModel model);
+    List<VisitPlan> queryPlanList (VisitPlanQueryModel model);
     long countByExample(VisitPlanExample example);
 
     int deleteByExample(VisitPlanExample example);

@@ -4,6 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import com.aidex.common.core.domain.api.CommonPage;
 import com.aidex.common.core.domain.api.CommonResult;
+import com.aidex.common.core.domain.entity.SysUser;
+import com.aidex.framework.cache.UserUtils;
 import com.aidex.system.domain.vo.VisitAppointmentVo;
 import com.aidex.system.domain.vo.VisitPlanVo;
 import com.aidex.system.dto.VisitDoctorPlanDTO;
@@ -153,11 +155,15 @@ public class VisitPlanController {
     }
 
     @ApiOperation(value = "根据医生，获取出诊信息", notes = "传入 医生编号、开始日期、结束日期")
-    @PostMapping(value = "/list")
+    @PostMapping(value = "/myList")
     public CommonResult<CommonPage<VisitPlanVo>>  searchVisitPlanList(@RequestBody VisitPlanQueryModel queryModel) {
 
         if (queryModel.getBegin().after(queryModel.getEnd())) {
             return CommonResult.validateFailed("不存在，该日期时间段");
+        }
+        SysUser currentUser = UserUtils.getUser();
+        if(!currentUser.isAdmin()){   //非管理员只能查看自己记录
+            queryModel.setDoctorId(Long.parseLong(currentUser.getId()));
         }
 
         return CommonResult.success(CommonPage.restPage(planService.getPlanList(queryModel)));

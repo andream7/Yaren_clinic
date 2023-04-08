@@ -242,9 +242,8 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <select id="countByGroup" parameterType="com.aidex.system.dto.query.VisitPlanQueryModel" resultType="com.aidex.system.dto.VisitPlanInfo">
-    select count(*) as num ,time, vp.`day`,doctor_id as doctorId ,dept_id as deptId from visit_plan as vp  GROUP BY vp.`day` ,vp.time,doctor_id,dept_id
-    HAVING vp.`day` BETWEEN #{begin} and #{end}
+  <select id="queryPlanList" parameterType="com.aidex.system.dto.query.VisitPlanQueryModel" resultType="com.aidex.system.entity.VisitPlan">
+    select id,dept_id as deptId,doctor_id as doctorId,`time`,`day`,received,sources from visit_plan as vp  where vp.`day` BETWEEN #{begin} and #{end}
     <if test="doctorId != 0">
       and doctor_id = #{doctorId}
     </if>

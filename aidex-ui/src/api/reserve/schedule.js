@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询排班列表
 export function getPlanList (data) {
   return request({
-    url: '/hospital/plan/list',
+    url: '/hospital/plan/myList',
     method: 'post',
     data: data
   })

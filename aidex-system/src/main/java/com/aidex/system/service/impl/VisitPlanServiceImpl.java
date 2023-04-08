@@ -164,21 +164,22 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
 
     @Override
     public List<VisitPlanVo> getPlanList(VisitPlanQueryModel queryModel){
-        List<VisitPlanInfo> visitPlanInfos = planMapper.countByGroup(queryModel);
-        return visitPlanInfos.stream()
+        List<VisitPlan> plans = planMapper.queryPlanList(queryModel);
+        return plans.stream()
                 .map(this::convertPlus)
                 .collect(Collectors.toList());
     }
 
-    private VisitPlanVo convertPlus(VisitPlanInfo info) {
+    private VisitPlanVo convertPlus(VisitPlan info) {
 
         VisitPlanVo vo = new VisitPlanVo();
         vo.setPeriod(info.getTime());
-        vo.setNum(info.getNum());
+        vo.setReceived(info.getReceived());
+        vo.setSources(info.getSources());
         vo.setDeptName(sysDeptService.selectDeptByDeptCode(String.valueOf(info.getDeptId())).getDeptName());
         vo.setDoctorId(info.getDoctorId());
         vo.setDoctorName(userService.get(String.valueOf(vo.getDoctorId())).getName());
-        vo.setDay(info.getDay());
+        vo.setDay((java.sql.Date) info.getDay());
 
         return vo;
     }

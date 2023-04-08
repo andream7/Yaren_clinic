@@ -9,7 +9,8 @@ public class VisitPlanVo {
     private long doctorId;
     private String doctorName;
     private String deptName;
-    private int num;
+    private int sources;
+    private int received;
     private int period;
     private Date day;
 }
