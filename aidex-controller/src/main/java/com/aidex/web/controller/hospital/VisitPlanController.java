@@ -4,11 +4,16 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import com.aidex.common.core.domain.api.CommonPage;
 import com.aidex.common.core.domain.api.CommonResult;
+import com.aidex.common.core.domain.entity.SysUser;
+import com.aidex.framework.cache.UserUtils;
+import com.aidex.system.domain.vo.VisitAppointmentVo;
+import com.aidex.system.domain.vo.VisitPlanVo;
 import com.aidex.system.dto.VisitDoctorPlanDTO;
 import com.aidex.system.dto.VisitPlanDTO;
 import com.aidex.system.dto.VisitPlanResiduesDTO;
 import com.aidex.system.dto.param.VisitPlanParam;
 import com.aidex.system.dto.param.VisitPlanUpdateParam;
+import com.aidex.system.dto.query.VisitPlanQueryModel;
 import com.aidex.system.service.ISysUserService;
 import com.aidex.system.service.IVisitPlanService;
 import com.aidex.system.service.SysDeptService;
@@ -99,6 +104,8 @@ public class VisitPlanController {
                 DateUtil.parse(day), pageNum, pageSize)));
     }
 
+
+
     @ApiOperation(value = "删除出诊计划", notes = "传入 出诊编号")
     @ApiImplicitParam(name = "id", value = "出诊编号", paramType = "path", dataType = "Long", required = true)
     @DeleteMapping(value = "/{id}")
@@ -132,23 +139,34 @@ public class VisitPlanController {
     }
 
     @ApiOperation(value = "根据医生，获取出诊信息", notes = "传入 医生编号、开始日期、结束日期")
-    @GetMapping(value = "/doctor")
-    public CommonResult<VisitDoctorPlanDTO> searchVisitPlanByDoctor(@RequestParam Long doctorId,
-                                                                    @RequestParam String startDate,
-                                                                    @RequestParam String endDate) {
+    @PostMapping(value = "/doctor")
+    public CommonResult<VisitPlanVo> searchVisitPlanByDoctor(@RequestBody VisitPlanQueryModel queryModel) {
 
-        if (!hospitalDoctorService.isExistDoctorById(doctorId)) {
+        if (!hospitalDoctorService.isExistDoctorById(queryModel.getDoctorId())) {
             return CommonResult.validateFailed("不存在，该医生编号！");
         }
 
-        Date start = DateUtil.parseDate(startDate);
-        Date end = DateUtil.parseDate(endDate);
 
-        if (start.getTime() > end.getTime()) {
+        if (queryModel.getBegin().after(queryModel.getEnd())) {
             return CommonResult.validateFailed("不存在，该日期时间段");
         }
 
-        return CommonResult.success(planService.getDoctorPlan(doctorId, start, end));
+        return CommonResult.success(planService.getDoctorPlan(queryModel));
+    }
+
+    @ApiOperation(value = "根据医生，获取出诊信息", notes = "传入 医生编号、开始日期、结束日期")
+    @PostMapping(value = "/myList")
+    public CommonResult<CommonPage<VisitPlanVo>>  searchVisitPlanList(@RequestBody VisitPlanQueryModel queryModel) {
+
+        if (queryModel.getBegin().after(queryModel.getEnd())) {
+            return CommonResult.validateFailed("不存在，该日期时间段");
+        }
+        SysUser currentUser = UserUtils.getUser();
+        if(!currentUser.isAdmin()){   //非管理员只能查看自己记录
+            queryModel.setDoctorId(Long.parseLong(currentUser.getId()));
+        }
+
+        return CommonResult.success(CommonPage.restPage(planService.getPlanList(queryModel)));
     }
 
     @ApiOperation(value = "根据医生编号、日期，获取出诊信息", notes = "传入 医生编号、日期")

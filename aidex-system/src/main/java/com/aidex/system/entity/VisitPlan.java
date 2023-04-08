@@ -61,6 +61,26 @@ public class VisitPlan implements Serializable {
      */
     @ApiModelProperty(value = "更新时间")
     private Date gmtModified;
+    @ApiModelProperty(value = "号源数")
+    private int sources;
+    @ApiModelProperty(value = "接诊数")
+    private int received;
+
+    public int getSources() {
+        return sources;
+    }
+
+    public void setSources(int sources) {
+        this.sources = sources;
+    }
+
+    public int getReceived() {
+        return received;
+    }
+
+    public void setReceived(int received) {
+        this.received = received;
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -122,19 +142,19 @@ public class VisitPlan implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", deptId=").append(deptId);
-        sb.append(", doctorId=").append(doctorId);
-        sb.append(", time=").append(time);
-        sb.append(", day=").append(day);
-        sb.append(", gmtCreate=").append(gmtCreate);
-        sb.append(", gmtModified=").append(gmtModified);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+        return getClass().getSimpleName() +
+                " [" +
+                "Hash = " + hashCode() +
+                ", id=" + id +
+                ", deptId=" + deptId +
+                ", doctorId=" + doctorId +
+                ", time=" + time +
+                ", day=" + day +
+                ", gmtCreate=" + gmtCreate +
+                ", gmtModified=" + gmtModified +
+                ", serialVersionUID=" + serialVersionUID +
+                ", sources=" + sources +
+                ", received=" + received +
+                "]";
     }
 }

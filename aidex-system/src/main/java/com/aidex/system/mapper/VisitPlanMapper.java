@@ -1,11 +1,15 @@
 package com.aidex.system.mapper;
 
+import com.aidex.system.dto.VisitPlanInfo;
+import com.aidex.system.dto.query.VisitPlanQueryModel;
 import com.aidex.system.entity.VisitPlan;
 import com.aidex.system.entity.VisitPlanExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface VisitPlanMapper {
+
+    List<VisitPlan> queryPlanList (VisitPlanQueryModel model);
     long countByExample(VisitPlanExample example);
 
     int deleteByExample(VisitPlanExample example);

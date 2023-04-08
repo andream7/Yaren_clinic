@@ -2,9 +2,11 @@ package com.aidex.system.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
+import com.aidex.system.domain.vo.VisitPlanVo;
 import com.aidex.system.dto.*;
 import com.aidex.system.dto.param.VisitPlanParam;
 import com.aidex.system.dto.param.VisitPlanUpdateParam;
+import com.aidex.system.dto.query.VisitPlanQueryModel;
 import com.aidex.system.entity.VisitPlan;
 import com.aidex.system.entity.VisitPlanExample;
 import com.aidex.system.mapper.VisitPlanMapper;
@@ -30,6 +32,12 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
 
     @Resource
     private VisitPlanMapper planMapper;
+    @Resource
+    private SysDeptService sysDeptService;
+
+
+    @Resource
+    private ISysUserService userService;
 //
 //    @Resource
 //    private IHospitalDoctorService hospitalDoctorService;
@@ -146,25 +154,34 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
     /**
      * 获取医生出诊信息
      *
-     * @param doctorId 医生编号
-     * @param start    开始日期
-     * @param end      结束日期
+
      * @return 医生出诊信息
      */
     @Override
-    public VisitDoctorPlanDTO getDoctorPlan(Long doctorId, Date start, Date end) {
+    public VisitPlanVo getDoctorPlan(VisitPlanQueryModel queryModel) {
+        return getPlanList(queryModel).get(0);
+    }
 
-        VisitDoctorPlanDTO dto = new VisitDoctorPlanDTO();
+    @Override
+    public List<VisitPlanVo> getPlanList(VisitPlanQueryModel queryModel){
+        List<VisitPlan> plans = planMapper.queryPlanList(queryModel);
+        return plans.stream()
+                .map(this::convertPlus)
+                .collect(Collectors.toList());
+    }
 
-        // 设置医生信息
-//        if (hospitalDoctorService.getConvert(doctorId).isPresent()) {
-//            dto.setDoctorDTO(hospitalDoctorService.getConvert(doctorId).get());
-//        }
+    private VisitPlanVo convertPlus(VisitPlan info) {
 
-        // 设置医生出诊信息列表
-        dto.setPlanListDTOList(getVisitPlanDTO(doctorId, start, end));
+        VisitPlanVo vo = new VisitPlanVo();
+        vo.setPeriod(info.getTime());
+        vo.setReceived(info.getReceived());
+        vo.setSources(info.getSources());
+        vo.setDeptName(sysDeptService.selectDeptByDeptCode(String.valueOf(info.getDeptId())).getDeptName());
+        vo.setDoctorId(info.getDoctorId());
+        vo.setDoctorName(userService.get(String.valueOf(vo.getDoctorId())).getName());
+        vo.setDay((java.sql.Date) info.getDay());
 
-        return dto;
+        return vo;
     }
 
     /**

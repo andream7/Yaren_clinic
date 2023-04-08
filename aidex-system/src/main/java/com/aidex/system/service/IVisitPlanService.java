@@ -1,10 +1,12 @@
 package com.aidex.system.service;
 
+import com.aidex.system.domain.vo.VisitPlanVo;
 import com.aidex.system.dto.VisitDoctorPlanDTO;
 import com.aidex.system.dto.VisitPlanDTO;
 import com.aidex.system.dto.VisitPlanResiduesDTO;
 import com.aidex.system.dto.param.VisitPlanParam;
 import com.aidex.system.dto.param.VisitPlanUpdateParam;
+import com.aidex.system.dto.query.VisitPlanQueryModel;
 import com.aidex.system.entity.VisitPlan;
 
 import java.util.Date;
@@ -67,15 +69,7 @@ public interface IVisitPlanService {
      */
     boolean count(Long id);
 
-    /**
-     * 获取医生出诊信息
-     *
-     * @param doctorId 医生编号
-     * @param start    开始日期
-     * @param end      结束日期
-     * @return 医生出诊信息
-     */
-    VisitDoctorPlanDTO getDoctorPlan(Long doctorId, Date start, Date end);
+
 
     /**
      * 查找出诊列表
@@ -90,10 +84,15 @@ public interface IVisitPlanService {
     List<VisitPlanDTO> list(Long deptId, Long doctorId, Date day,
                             Integer pageNum, Integer pageSize);
 
+
+    VisitPlanVo getDoctorPlan(VisitPlanQueryModel queryModel);
+
+    List<VisitPlanVo> getPlanList(VisitPlanQueryModel queryModel);
+
     /**
      * 获取医生出诊信息
      *
-     * @param hospitalId 医院编号
+
      * @param doctorId   医生编号
      * @param date       日期
      * @return 医生出诊信息

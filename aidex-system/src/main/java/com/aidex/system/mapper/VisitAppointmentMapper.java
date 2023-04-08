@@ -1,5 +1,7 @@
 package com.aidex.system.mapper;
 
+import com.aidex.system.dto.VisitAppointmentInfo;
+import com.aidex.system.dto.query.VisitAppointmentQueryModel;
 import com.aidex.system.entity.VisitAppointment;
 import com.aidex.system.entity.VisitAppointmentExample;
 import java.util.List;
@@ -17,6 +19,9 @@ public interface VisitAppointmentMapper {
     int insertSelective(VisitAppointment record);
 
     List<VisitAppointment> selectByExample(VisitAppointmentExample example);
+
+    VisitAppointmentInfo selectDetails(@Param("id") Long id);
+    List<VisitAppointmentInfo> selectByExamplePlus(VisitAppointmentQueryModel queryModel);
 
     VisitAppointment selectByPrimaryKey(Long id);
 
