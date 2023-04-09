@@ -103,12 +103,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.aidex.system.entity.VisitPlan">
-    insert into visit_plan (id, dept_id, doctor_id,
+    insert into visit_plan ( dept_id, doctor_id,
       time, day, gmt_create, 
-      gmt_modified)
-    values (#{id,jdbcType=BIGINT}, #{deptId,jdbcType=BIGINT}, #{doctorId,jdbcType=BIGINT},
+      gmt_modified, sources)
+    values ( #{deptId,jdbcType=BIGINT}, #{doctorId,jdbcType=BIGINT},
       #{time,jdbcType=INTEGER}, #{day,jdbcType=TIMESTAMP}, #{gmtCreate,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP},#{sources,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.aidex.system.entity.VisitPlan">
     insert into visit_plan
@@ -218,6 +218,9 @@
       </if>
       <if test="time != null">
         time = #{time,jdbcType=INTEGER},
+      </if>
+      <if test="sources != null">
+        sources = #{sources,jdbcType=INTEGER},
       </if>
       <if test="day != null">
         day = #{day,jdbcType=TIMESTAMP},

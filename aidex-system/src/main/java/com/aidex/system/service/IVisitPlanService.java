@@ -53,6 +53,8 @@ public interface IVisitPlanService {
      */
     boolean deleteAll(List<Long> idList);
 
+    boolean update(VisitPlan info);
+
     /**
      * 获取出诊计划
      *

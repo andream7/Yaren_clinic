@@ -96,6 +96,23 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
         return planMapper.updateByPrimaryKeySelective(plan) > 0;
     }
 
+    @Override
+    public boolean update(VisitPlan info) {
+
+        VisitPlan plan = planMapper.selectByPrimaryKey(info.getId());
+        if(plan == null){
+            info.setGmtCreate(new Date());
+            info.setGmtModified(new Date());
+            return planMapper.insert(info) > 0;
+        }
+        plan.setId(info.getId());
+        plan.setGmtModified(new Date());
+        plan.setTime(info.getTime());
+        plan.setSources(info.getSources());
+
+        return planMapper.updateByPrimaryKeySelective(plan) > 0;
+    }
+
     /**
      * 获取出诊计划
      *
@@ -174,12 +191,13 @@ public class VisitPlanServiceImpl implements IVisitPlanService {
 
         VisitPlanVo vo = new VisitPlanVo();
         vo.setPeriod(info.getTime());
+        vo.setPlanId(info.getId());
         vo.setReceived(info.getReceived());
         vo.setSources(info.getSources());
         vo.setDeptName(sysDeptService.selectDeptByDeptCode(String.valueOf(info.getDeptId())).getDeptName());
         vo.setDoctorId(info.getDoctorId());
         vo.setDoctorName(userService.get(String.valueOf(vo.getDoctorId())).getName());
-        vo.setDay((java.sql.Date) info.getDay());
+        vo.setDay(new java.sql.Date(info.getDay().getTime()) );
 
         return vo;
     }

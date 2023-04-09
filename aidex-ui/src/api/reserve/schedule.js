@@ -13,7 +13,15 @@ export function getPlanList (data) {
 export function getPlan (id) {
   return request({
     url: '/hospital/plan/doctor',
-    method: 'post',
+    method: 'get',
     params: id
+  })
+}
+
+export function updatePlan(data) {
+  return request({
+    url: '/hospital/plan/updateSources',
+    method: 'post',
+    data: data
   })
 }

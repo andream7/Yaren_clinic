@@ -14,6 +14,7 @@ import com.aidex.system.dto.VisitPlanResiduesDTO;
 import com.aidex.system.dto.param.VisitPlanParam;
 import com.aidex.system.dto.param.VisitPlanUpdateParam;
 import com.aidex.system.dto.query.VisitPlanQueryModel;
+import com.aidex.system.entity.VisitPlan;
 import com.aidex.system.service.ISysUserService;
 import com.aidex.system.service.IVisitPlanService;
 import com.aidex.system.service.SysDeptService;
@@ -78,6 +79,17 @@ public class VisitPlanController {
         }
 
         if (planService.update(id, param)) {
+            return CommonResult.success();
+        }
+
+        return CommonResult.failed("服务器错误，请联系管理员！");
+    }
+
+    @ApiOperation(value = "更新出诊计划号源数", notes = "传入 出诊编号、号源数")
+    @PostMapping(value = "/updateSources")
+    public CommonResult updateVisitPlanSources(@RequestBody VisitPlan info) {
+
+        if (planService.update(info)) {
             return CommonResult.success();
         }
 

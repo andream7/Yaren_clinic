@@ -6,6 +6,7 @@ import java.sql.Date;
 
 @Data
 public class VisitPlanVo {
+    private long planId;
     private long doctorId;
     private String doctorName;
     private String deptName;

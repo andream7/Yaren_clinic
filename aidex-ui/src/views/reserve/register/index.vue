@@ -67,7 +67,7 @@ import Detail from "@/views/reserve/register/detail";
 import {getAppointmentDetail, getAppointmentList} from "@/api/reserve/register";
 
 const statusArr = ["未开始","失约","取消","已完成"]
-const periodArr = ["上午","下午"]
+const periodArr = ["","上午","下午"]
 
 export default {
   name: 'index',

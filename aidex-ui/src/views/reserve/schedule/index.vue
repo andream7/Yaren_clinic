@@ -19,7 +19,7 @@
       class="ant-table-striped"
       :rowClassName="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"
       bordered :columns="columns" :row-key="record => record.name" :data-source="tableData" :scroll="{ x: 1500 }">
-      <a slot="ope" slot-scope="text, record" @click="showModal(record.id)">操作</a>
+      <a slot="ope" slot-scope="text, record" @click="showModal(record)">操作</a>
       <template slot="title0">{{ this.columnNames[0] }}</template>
       <template slot="title1">{{ this.columnNames[1] }}</template>
       <template slot="title2">{{ this.columnNames[2] }}</template>
@@ -36,8 +36,9 @@
       ok-text="确认"
       cancel-text=""
       @ok="hideModal"
+      destroyOnClose
     >
-      <Plan :myinfo = "this.myinfo"></Plan>
+      <Plan :myinfo="myId"></Plan>
     </a-modal>
   </div>
 
@@ -46,6 +47,7 @@
 <script>
 import Plan from "@/views/reserve/schedule/plan";
 import {getPlan, getPlanList} from "@/api/reserve/schedule";
+import {listUser} from "@/api/system/user";
 
 export default {
   name: 'index',
@@ -55,7 +57,7 @@ export default {
       offsetWeek: 0,
       begin: {},
       end: {},
-      myinfo: {},
+      myId: {},
       tableData: [],
       columnNames: [],
       columns: [
@@ -220,20 +222,15 @@ export default {
     }
   },
   methods: {
-    showModal(id) {
+    showModal(record) {
       this.showOpe = true
-      let query = {};
-      query.begin = new Date("2023-03-26")
-      query.end = this.end
-      query.doctorId = id
-      getPlanList(query).then(rep => {
-        console.log(rep)
-        this.myinfo.info = rep.data.list
-
-      })
+      this.myId.doctorId = (record.doctorId)
+      this.myId.deptId = record.deptId
+      console.log(this.myId,"发送了")
     },
     hideModal() {
       this.showOpe = false
+      this.getInfo()
     },
     changeWeek() {
       this.getCurrentWeekDates(this.offsetWeek)
@@ -262,28 +259,33 @@ export default {
       let query = {};
       query.begin = this.begin
       query.end = this.end
+      this.tableData = []
+      let mapping = {};
+      listUser().then(
+        (rep)=>{
+          let i = 0
+          for(let item of rep.data.list){
+            let t = {}
+            t.doctorId = item.id
+            t.doctorName = item.name
+            t.name = item.name
+            t.deptId = item.deptId
+            t.deptName = item.sysDept.deptName
+            t.c = t.deptName
+            this.tableData.push(t)
+            mapping[item.id] = i;
+            i++;
+          }
+        }
+      )
       getPlanList(query)
         .then(response => {
-          console.log(response)
-          let myBody = {};
+          console.log(response, "sxsa")
           for (let item of response.data.list) {
-            if (!myBody.hasOwnProperty(item.doctorId)) {
-              myBody[item.doctorId] = []
-            }
-            myBody[item.doctorId].push(item)
-
-          }
-          for (let item of Object.keys(myBody)) {
-            let line = {};
-            for (let entry of myBody[item]) {
-              line.id = entry.doctorId
-              line.name = entry.doctorName
-              line.c = entry.deptName
-              let pam = (entry.period == 1 ? "morning" : "afternoon") + (new Date(entry.day).getDay())
-
-              line[pam] = entry.num
-            }
-            this.tableData.push(line)
+            let pam = (item.period === 1 ? "morning" : "afternoon") + (new Date(item.day).getDay())
+            let tmp = this.tableData[mapping[item.doctorId]]
+            tmp[pam] = item.received + "/" + item.sources
+            this.$set(this.tableData,mapping[item.doctorId],tmp)
           }
         })
     }
