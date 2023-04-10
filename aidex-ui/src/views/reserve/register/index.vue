@@ -42,6 +42,9 @@
         <a-button type="primary" @click="handleSummit">
           查询
         </a-button>
+        <a-button @click="handleReset">
+          重置
+        </a-button>
       </a-col>
     </a-row>
 
@@ -125,6 +128,13 @@ export default {
 
   },
   methods: {
+    handleReset(){
+      this.selectInputValue = ""
+      this.selectType = "doctorName"
+      this.rstatus = 1
+      this.dateRange = null
+      this.handleSummit()
+    },
     handleSummit() {
       let query = {}
       if(this.rstatus && this.rstatus !== 1){   //状态
