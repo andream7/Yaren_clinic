@@ -51,7 +51,7 @@
             <a-button  @click="cancelSetPlan"> 取消排班</a-button>
           </div>
           <a-calendar mode="month" :fullscreen="false" v-model:value="currentTime" @select="onSelectFn"
-                      @panelChange="onPanelChangeFn" :validRange="range">
+                      @panelChange="onPanelChangeFn" :validRange="range"  :header-render="headerRender">
             <ul slot="dateCellRender" slot-scope="value" class="events">
               <li v-for="item in getListData(value)" :key="item.content">
                 <a-badge :status="item.type" :text="item.content" class="xxx"/>
@@ -92,6 +92,72 @@ export default {
     this.getCurrentMonthFirstAndLastDay()
   },
   methods: {
+    headerRender({ value, type, onChange, onTypeChange }) {
+      const start = 0;
+      const end = 12;
+      const monthOptions = [];
+
+      const current = value.clone();
+      const localeData = value.localeData();
+      const months = [];
+      for (let i = 0; i < 12; i++) {
+        current.month(i);
+        months.push(localeData.monthsShort(current));
+      }
+
+      for (let index = start; index < end; index++) {
+        monthOptions.push(
+          <a-select-option class="month-item" key={`${index}`}>
+            {months[index]}
+          </a-select-option>,
+        );
+      }
+      const month = value.month();
+
+      const year = value.year();
+      const options = [];
+      for (let i = year - 10; i < year + 10; i += 1) {
+        options.push(
+          <a-select-option key={i} value={i} class="year-item">
+            {i}
+          </a-select-option>,
+        );
+      }
+      return (
+        <div style={{ padding: '10px' }}>
+          <a-row type="flex" justify="space-between">
+            <a-col>
+              <a-select
+                size="small"
+                dropdownMatchSelectWidth={false}
+                class="my-year-select"
+                onChange={newYear => {
+                  const now = value.clone().year(newYear);
+                  onChange(now);
+                }}
+                value={String(year)}
+              >
+                {options}
+              </a-select>
+            </a-col>
+            <a-col>
+              <a-select
+                size="small"
+                dropdownMatchSelectWidth={false}
+                value={String(month)}
+                onChange={selectedMonth => {
+                  const newValue = value.clone();
+                  newValue.month(parseInt(selectedMonth, 10));
+                  onChange(newValue);
+                }}
+              >
+                {monthOptions}
+              </a-select>
+            </a-col>
+          </a-row>
+        </div>
+      );
+    },
     cancelSetPlan(){
       this.canShow = true;
       this.canSetPlan = false;
