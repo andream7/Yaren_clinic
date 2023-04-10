@@ -1,55 +1,57 @@
 <template>
-  <div>
-    <a-row :gutter="24">
-      <a-col
-        :span="8"
-      >
-        <a-radio-group name="radioGroup" v-model:value="rstatus">
-          <a-radio :value="1">全部</a-radio>
-          <a-radio :value="2">未开始</a-radio>
-          <a-radio :value="3">失约</a-radio>
-          <a-radio :value="4">取消</a-radio>
-          <a-radio :value="5">已完成</a-radio>
-        </a-radio-group>
-      </a-col>
-      <a-col
-        :span="8"
-      >
-        <label>选择日期：</label>
-        <a-range-picker  v-model:value="dateRange"/>
-      </a-col>
-      <a-col
-        :span="8"
-      >
-        <a-input-group compact>
-          <a-select  v-model:value = "selectType">
-            <a-select-option value="doctorName">
-              医生
-            </a-select-option>
-            <a-select-option value="patientName">
-              患者
-            </a-select-option>
-            <a-select-option value="clinicName">
-              诊室
-            </a-select-option>
-          </a-select>
-          <a-input style="width: 50%" placeholder="可输入查询内容" v-model="selectInputValue"/>
-        </a-input-group>
-      </a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="24" :style="{ textAlign: 'right' }">
-        <a-button type="primary" @click="handleSummit">
-          查询
-        </a-button>
-        <a-button @click="handleReset">
-          重置
-        </a-button>
-      </a-col>
-    </a-row>
+  <div class="contains1">
+    <div class="header1">
+      <a-row :gutter="8">
+        <a-col
+          :span="8"
+        >
+          <a-radio-group name="radioGroup" v-model:value="rstatus" class="q2">
+            <a-radio :value="1">全部</a-radio>
+            <a-radio :value="2">未开始</a-radio>
+            <a-radio :value="3">失约</a-radio>
+            <a-radio :value="4">取消</a-radio>
+            <a-radio :value="5">已完成</a-radio>
+          </a-radio-group>
+        </a-col>
+        <a-col
+          :span="8"
+        >
+          <label class="q3">选择日期：</label>
+          <a-range-picker v-model:value="dateRange" class="q4"/>
+        </a-col>
+        <a-col
+          :span="8"
+        >
+          <a-input-group compact>
+            <a-select v-model:value="selectType">
+              <a-select-option value="doctorName">
+                医生
+              </a-select-option>
+              <a-select-option value="patientName">
+                患者
+              </a-select-option>
+              <a-select-option value="clinicName">
+                诊室
+              </a-select-option>
+            </a-select>
+            <a-input style="width: 50%" placeholder="可输入查询内容" v-model="selectInputValue" class="q5"/>
+          </a-input-group>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="24" :style="{ textAlign: 'right' }">
+          <a-button type="primary" @click="handleSummit" class="q6">
+            查询
+          </a-button>
+          <a-button @click="handleReset" class="q7">
+            重置
+          </a-button>
+        </a-col>
+      </a-row>
+    </div>
 
     <br/>
-    <a-table :dataSource="tableData" :columns="columns" bordered :row-key="record => record.name">
+    <a-table :dataSource="tableData" :columns="columns" bordered :row-key="record => record.name" class="q8">
       <a slot="ope" slot-scope="text, record" @click="showModal(record)" style="color: #7cb305">🔎详情</a>
     </a-table>
 
@@ -60,7 +62,7 @@
       ok-text="确认"
       @ok="hideModal"
     >
-      <Detail :info = "detailInfo"></Detail>
+      <Detail :info="detailInfo"></Detail>
     </a-modal>
   </div>
 </template>
@@ -69,8 +71,8 @@
 import Detail from "@/views/reserve/register/detail";
 import {getAppointmentDetail, getAppointmentList} from "@/api/reserve/register";
 
-const statusArr = ["未开始","失约","取消","已完成"]
-const periodArr = ["8点~8点半","8点半~9点","9点~9点半","9点半~10点","10点~10点半","11点~11点半","11点半~12点","12点~12点半","12点半~13点","13点~13点半","13点半~14点","14点~14点半","14点半~15点","15点~15点半","15点半~16点"];
+const statusArr = ["未开始", "失约", "取消", "已完成"]
+const periodArr = ["8点~8点半", "8点半~9点", "9点~9点半", "9点半~10点", "10点~10点半", "11点~11点半", "11点半~12点", "12点~12点半", "12点半~13点", "13点~13点半", "13点半~14点", "14点~14点半", "14点半~15点", "15点~15点半", "15点半~16点"];
 
 export default {
   name: 'index',
@@ -128,7 +130,7 @@ export default {
 
   },
   methods: {
-    handleReset(){
+    handleReset() {
       this.selectInputValue = ""
       this.selectType = "doctorName"
       this.rstatus = 1
@@ -137,19 +139,19 @@ export default {
     },
     handleSummit() {
       let query = {}
-      if(this.rstatus && this.rstatus !== 1){   //状态
+      if (this.rstatus && this.rstatus !== 1) {   //状态
         query.status = this.rstatus - 2
       }
-      if(this.dateRange){
+      if (this.dateRange) {
         query.begin = this.dateRange[0].toDate()
         query.end = this.dateRange[1].toDate()
       }
-      if(this.selectType){
-        if(this.selectType === "clinicName"){
+      if (this.selectType) {
+        if (this.selectType === "clinicName") {
           query.clinicName = this.selectInputValue || ""
-        }else if(this.selectType === "doctorName"){
+        } else if (this.selectType === "doctorName") {
           query.doctorName = this.selectInputValue || ""
-        }else if(this.selectType === "patientName"){
+        } else if (this.selectType === "patientName") {
           query.name = this.selectInputValue || ""
         }
       }
@@ -157,7 +159,7 @@ export default {
         .then(response => {
           let that = this
           that.tableData = []
-          for (let item of response.data.list){
+          for (let item of response.data.list) {
             item.nameP = item.patientName
             item.nameD = item.doctorName
             item.nameR = item.clinicName
@@ -170,19 +172,19 @@ export default {
     showModal(record) {
       this.showOpe = true
       console.log(record)
-      if(record === undefined){
+      if (record === undefined) {
         return;
       }
       let params = {}
       params.appointmentId = record.appointmentId
       getAppointmentDetail(params)
-          .then(response => {
-            console.log(response)
-            response.data.status = statusArr[response.data.status]
-            response.data.period = periodArr[response.data.period]
-            this.detailInfo = response.data
+        .then(response => {
+          console.log(response)
+          response.data.status = statusArr[response.data.status]
+          response.data.period = periodArr[response.data.period]
+          this.detailInfo = response.data
 
-          })
+        })
 
     },
     hideModal() {
