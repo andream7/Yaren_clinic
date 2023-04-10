@@ -4,7 +4,7 @@
       <a-col
         :span="8"
       >
-        <a-radio-group name="radioGroup" v-model:value="formData.status">
+        <a-radio-group name="radioGroup" v-model:value="rstatus">
           <a-radio :value="1">全部</a-radio>
           <a-radio :value="2">未开始</a-radio>
           <a-radio :value="3">失约</a-radio>
@@ -16,13 +16,13 @@
         :span="8"
       >
         <label>选择日期：</label>
-        <a-range-picker v-model:value="dateRange"/>
+        <a-range-picker  v-model:value="dateRange"/>
       </a-col>
       <a-col
         :span="8"
       >
         <a-input-group compact>
-          <a-select default-value="医生">
+          <a-select  v-model:value = "selectType">
             <a-select-option value="doctorName">
               医生
             </a-select-option>
@@ -33,7 +33,7 @@
               诊室
             </a-select-option>
           </a-select>
-          <a-input style="width: 50%" placeholder="可输入查询内容"/>
+          <a-input style="width: 50%" placeholder="可输入查询内容" v-model="selectInputValue"/>
         </a-input-group>
       </a-col>
     </a-row>
@@ -67,22 +67,20 @@ import Detail from "@/views/reserve/register/detail";
 import {getAppointmentDetail, getAppointmentList} from "@/api/reserve/register";
 
 const statusArr = ["未开始","失约","取消","已完成"]
-const periodArr = ["","上午","下午"]
+const periodArr = ["8点~8点半","8点半~9点","9点~9点半","9点半~10点","10点~10点半","11点~11点半","11点半~12点","12点~12点半","12点半~13点","13点~13点半","13点半~14点","14点~14点半","14点半~15点","15点~15点半","15点半~16点"];
 
 export default {
   name: 'index',
   components: {Detail},
   data() {
     return {
+      selectInputValue: "",
       detailInfo: {},
       dateRange: null,
       tableData: [],
+      selectType: "doctorName",
       showOpe: false,
-      selectValue: null,
-      formData: {
-        status: 1,
-
-      },
+      rstatus: 1,
       columns: [
         {
           title: '患者姓名',
@@ -128,9 +126,27 @@ export default {
   },
   methods: {
     handleSummit() {
-      getAppointmentList({})
+      let query = {}
+      if(this.rstatus && this.rstatus !== 1){   //状态
+        query.status = this.rstatus - 2
+      }
+      if(this.dateRange){
+        query.begin = this.dateRange[0].toDate()
+        query.end = this.dateRange[1].toDate()
+      }
+      if(this.selectType){
+        if(this.selectType === "clinicName"){
+          query.clinicName = this.selectInputValue || ""
+        }else if(this.selectType === "doctorName"){
+          query.doctorName = this.selectInputValue || ""
+        }else if(this.selectType === "patientName"){
+          query.name = this.selectInputValue || ""
+        }
+      }
+      getAppointmentList(query)
         .then(response => {
           let that = this
+          that.tableData = []
           for (let item of response.data.list){
             item.nameP = item.patientName
             item.nameD = item.doctorName

@@ -2,6 +2,7 @@ package com.aidex.system.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
+import com.aidex.common.utils.StringUtils;
 import com.aidex.system.domain.vo.VisitAppointmentDetailVo;
 import com.aidex.system.domain.vo.VisitAppointmentVo;
 import com.aidex.system.dto.*;
@@ -478,6 +479,17 @@ public class VisitAppointmentServiceImpl implements IVisitAppointmentService {
         List<VisitAppointmentInfo> result = appointmentMapper.selectByExamplePlus(queryModel);
         return result.stream()
                 .map(this::convertPlus)
+                .filter((info)->{
+                    if(!StringUtils.isEmpty(queryModel.getDoctorName())) {
+                        return info.getDoctorName().contains(queryModel.getDoctorName());
+                    }else if(!StringUtils.isEmpty(queryModel.getClinicName()) ){
+                        return info.getClinicName().contains(queryModel.getClinicName());
+                    }else if(!StringUtils.isEmpty(queryModel.getName())){
+                        return info.getPatientName().contains(queryModel.getName());
+                    }else{
+                        return true;
+                    }
+                })
                 .collect(Collectors.toList());
     }
 

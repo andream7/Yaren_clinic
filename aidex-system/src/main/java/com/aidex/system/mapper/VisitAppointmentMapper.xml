@@ -88,8 +88,15 @@
   </select>
 
   <select id="selectByExamplePlus" parameterType="com.aidex.system.dto.query.VisitAppointmentQueryModel" resultType="com.aidex.system.dto.VisitAppointmentInfo">
-    select va.id, va.card_id, vp.doctor_id, vp.dept_id,vp.`day`,va.`status`,va.time_period
+    select va.id, va.card_id, vp.doctor_id, vp.dept_id,vp.`day`,va.`status`,va.time_period as `time`
     from visit_appointment as va LEFT JOIN visit_plan as vp on vp.id = va.plan_id
+    where 1=1
+    <if test="begin != null ">
+         and `day` between #{begin} and #{end}
+    </if>
+    <if test="status != null ">
+        and status = #{status}
+    </if>
     ORDER BY vp.`day` desc
 
   </select>
