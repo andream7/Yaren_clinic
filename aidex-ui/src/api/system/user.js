@@ -4,7 +4,7 @@ import { praseStrEmpty } from '@/utils/aidex'
 // 查询用户列表
 export function listUser (query) {
   return request({
-    url: '/system/user/list',
+    url: '/hospital/patient/list',
     method: 'get',
     params: query
   })

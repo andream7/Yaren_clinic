@@ -6,13 +6,13 @@
         <a-form :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-row :gutter="48">
             <a-col :md="6" :sm="24">
-              <a-form-item label="患者名称">
-                <a-input v-model="queryParam.jobName" placeholder="请输入患者名称" allow-clear @keyup.enter.native="handleQuery"/>
+              <a-form-item label="用户名">
+                <a-input v-model="queryParam.name" placeholder="请输入患者名称" allow-clear @keyup.enter.native="handleQuery"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
-              <a-form-item label="证件号码">
-                <a-input v-model="queryParam.jobGroup" placeholder="请输入证件号码" allow-clear @keyup.enter.native="handleQuery"/>
+              <a-form-item label="手机号">
+                <a-input v-model="queryParam.phone" placeholder="请输入证件号码" allow-clear @keyup.enter.native="handleQuery"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
@@ -36,20 +36,27 @@
     </a-card>
     <a-card :bordered="false" class="table-card">
       <!-- 详细信息 -->
-      <view-form ref="viewForm" :jobGroupOptions="jobGroupOptions" />
+      <view-form ref="viewForm" />
       <!-- 增加修改 -->
       <create-form
         ref="createForm"
         :statusOptions="statusOptions"
-        :jobGroupOptions="jobGroupOptions"
         @ok="getList"
+      />
+      <!-- 增加修改 -->
+      <sys-user-add-form
+        v-if="showAddModal"
+        ref="sysUserAddForm"
+        :statusOptions="statusOptions"
+        @ok="getList"
+        @close="showAddModal = false"
       />
       <advance-table
         :columns="columns"
         :data-source="list"
-        title="定时任务"
+        title="用户信息"
         :loading="loading"
-        rowKey="jobId"
+        rowKey="Id"
         tableKey="monitor-job-index-table"
         :isTableConfig="false"
         :isShowSetBtn="false"
@@ -70,12 +77,9 @@
         }"
       >
         <div class="table-operations" slot="button">
-          <a-button type="primary" @click="$refs.createForm.handleAdd()" v-hasPermi="['monitor:job:add']">
+          <a-button type="primary" @click="handleAdd()" >
             <a-icon type="plus" />新增
           </a-button>
-          <!-- <a-button type="primary" v-if="!single" :disabled="single" @click="$refs.createForm.handleUpdate(undefined, ids)" v-hasPermi="['monitor:job:edit']">
-            <a-icon type="edit" />修改
-          </a-button> -->
           <a-button type="danger" v-if="!multiple" :disabled="multiple" @click="handleDelete" v-hasPermi="['monitor:job:remove']">
             <a-icon type="delete" />删除
           </a-button>
@@ -86,7 +90,7 @@
             <a-icon type="snippets" />日志
           </a-button>
         </div>
-        <span slot="jobGroup" slot-scope="{text, record}">
+        <span slot="phone" slot-scope="{text, record}">
           {{ jobGroupFormat(record) }}
         </span>
         <span slot="status" slot-scope="{text, record}">
@@ -96,35 +100,26 @@
             @confirm="confirmHandleStatus(record)"
             @cancel="cancelHandleStatus(record)"
           >
-            <span slot="title">确认<b>{{ record.status === '1' ? '开启' : '关闭' }}</b>{{ record.jobName }}的任务吗?</span>
+            <span slot="title">确认<b>{{ record.status === '1' ? '开启' : '关闭' }}</b>{{ record.name }}的任务吗?</span>
             <a-switch checked-children="开" un-checked-children="关" :checked="record.status == 0" />
           </a-popconfirm>
         </span>
+        <span slot="status" slot-scope="{text, record}" >
+          <a-badge status="processing" :text=" statusFormat(record) " />
+        </span>
+        <span slot="gmtCreate" slot-scope="{text, record}">
+          {{ parseTime(record.gmtCreate) }}
+        </span>
         <span slot="operation" slot-scope="{text, record}">
-          <a-popconfirm
-            ok-text="是"
-            cancel-text="否"
-            @confirm="confirmHandleRun(record)"
-            @cancel="cancelHandleRun(record)"
-          >
-            <span slot="title">确认执行一次{{ record.jobName }}的任务吗?</span>
-            <a v-hasPermi="['monitor:job:changeStatus']">
-              <a-icon type="caret-right" />
-              执行一次
-            </a>
-          </a-popconfirm>
-
-          <a-divider type="vertical" />
-          <a @click="$refs.createForm.handleUpdate(record)" v-hasPermi="['monitor:job:edit']">
-            <a-icon type="eye" />修改
+          <a @click="handleUpdate(record,undefined)" v-hasPermi="['system:user:edit']">
+            修改
           </a>
-          <a-divider type="vertical" />
-          <a @click="$refs.viewForm.handleView(record)" v-hasPermi="['monitor:job:query']">
-            <a-icon type="eye" />详细
+          <a-divider type="vertical" v-if="record.id !== 1" v-hasPermi="['system:user:remove']" />
+          <a @click="handleDelete(record)" v-if="record.id !== 1" v-hasPermi="['system:user:remove']">
+            删除
           </a>
         </span>
       </advance-table>
-
     </a-card>
   </div>
 </template>
@@ -132,19 +127,23 @@
 <script>
 
 import { delJob, exportJob, runJob, changeJobStatus } from '@/api/monitor/job'
-import CreateForm from './createForm'
-import ViewForm from './viewForm'
+import CreateForm from '../list/createForm'
+import ViewForm from '../list/viewForm'
 import AdvanceTable from '@/components/pt/table/AdvanceTable'
-import { listUser } from '@/api/system/user'
+import {delUser, listUser} from '@/api/system/user'
+import SysUserAddForm from "@/views/system/user/modules/SysUserAddForm";
 export default {
   name: 'Job',
   components: {
     CreateForm,
     ViewForm,
+    SysUserAddForm,
     AdvanceTable
   },
   data () {
     return {
+      showAddModal: false,
+      showEditModal: false,
       list: [],
       selectedRowKeys: [],
       selectedRows: [],
@@ -161,63 +160,54 @@ export default {
       total: 0,
       // 状态数据字典
       statusOptions: [],
-      jobGroupOptions: [],
       // 日期范围
       dateRange: [],
       queryParam: {
         pageNum: 1,
         pageSize: 10,
-        jobName: undefined,
-        jobGroup: undefined,
+        name: undefined,
+        phone: undefined,
         status: undefined
       },
       columns: [
         {
-          title: '患者编号',
-          dataIndex: 'jobId',
+          title: '用户编号',
+          dataIndex: 'id',
           width: '70px',
           align: 'center'
         },
         {
-          title: '患者姓名',
-          dataIndex: 'jobName',
+          title: '用户名',
+          dataIndex: 'name',
           ellipsis: true,
           align: 'center'
         },
         {
-          title: '微信昵称',
-          dataIndex: 'jobGroup',
-          scopedSlots: { customRender: 'jobGroup' },
-          align: 'center'
-        },
-        {
-          title: '就诊卡号',
-          dataIndex: 'invokeTarget',
+          title: '手机号',
+          dataIndex: 'phone',
           ellipsis: true,
           align: 'center'
         },
         {
-          title: '证件号码',
-          dataIndex: 'cronExpression',
-          ellipsis: true,
-          align: 'center'
-        },
-        {
-          title: '手机号码',
+          title: '状态',
           dataIndex: 'status',
           scopedSlots: { customRender: 'status' },
           align: 'center'
         },
         {
-          title: '患者状态',
-          dataIndex: 'remark',
-          ellipsis: true
+          title: '创建时间',
+          dataIndex: 'gmtCreate',
+          width: '20%',
+          ellipsis: true,
+          scopedSlots: { customRender: 'gmtCreate' },
+          align: 'center'
         },
         {
           title: '操作',
           dataIndex: 'operation',
-          width: '250px',
-          scopedSlots: { customRender: 'operation' }
+          width: '20%',
+          scopedSlots: { customRender: 'operation' },
+          align: 'center'
         }
       ]
     }
@@ -229,9 +219,6 @@ export default {
     this.getDicts('sys_job_status').then(response => {
       this.statusOptions = response.data
     })
-    this.getDicts('sys_job_group').then(response => {
-      this.jobGroupOptions = response.data
-    })
   },
   computed: {
   },
@@ -240,10 +227,12 @@ export default {
   methods: {
     /** 查询定时任务列表 */
     getList () {
+      this.showAddModal = false
+      this.showEditModal = false
       this.loading = true
-      listUser(this.queryParam).then(response => {
-          // this.list = response.rows
-          // this.total = response.total
+      listUser(this.addDateRange(this.queryParam, this.dateRange)).then(response => {
+          this.list = response.data.list
+          this.total = response.data.total
           this.loading = false
         }
       )
@@ -253,9 +242,9 @@ export default {
       return this.selectDictLabel(this.statusOptions, row.status)
     },
     // 任务组名字典翻译
-    jobGroupFormat (row) {
-      return this.selectDictLabel(this.jobGroupOptions, row.jobGroup)
-    },
+    // jobGroupFormat (row) {
+    //   return this.selectDictLabel(this.jobGroupOptions, row.phone)
+    // },
     /** 搜索按钮操作 */
     handleQuery () {
       this.queryParam.pageNum = 1
@@ -267,8 +256,8 @@ export default {
       this.queryParam = {
         pageNum: 1,
         pageSize: 10,
-        jobName: undefined,
-        jobGroup: undefined,
+        name: undefined,
+        phone: undefined,
         status: undefined
       }
       this.handleQuery()
@@ -315,44 +304,7 @@ export default {
     },
     cancelHandleStatus (row) {
     },
-    /* 立即执行一次 */
-    confirmHandleRun (row) {
-      runJob(row.jobId, row.jobGroup)
-        .then(() => {
-          this.$message.success(
-            '执行成功',
-            3
-          )
-        }).catch(function () {
-        this.$message.error(
-          '发生异常',
-          3
-        )
-      })
-    },
     cancelHandleRun (row) {
-    },
-    /** 删除按钮操作 */
-    handleDelete (row) {
-      var that = this
-      this.ids = this.selectedRows.map(item => item.jobId)
-      const jobIds = row.jobId || this.ids
-      this.$confirm({
-        title: '确认删除所选中数据?',
-        content: '当前选中定时任务编号为' + jobIds + '的数据',
-        onOk () {
-          return delJob(jobIds)
-            .then(() => {
-              that.onSelectChange([], [])
-              that.getList()
-              that.$message.success(
-                '删除成功',
-                3
-              )
-            })
-        },
-        onCancel () {}
-      })
     },
     /** 导出按钮操作 */
     handleExport () {
@@ -372,7 +324,41 @@ export default {
         },
         onCancel () {}
       })
-    }
+    },
+    handleAdd () {
+      this.showAddModal = true
+      this.$nextTick(() => (
+        this.$refs.sysUserAddForm.handleAdd()
+      ))
+    },
+    handleUpdate (record, ids) {
+      this.showEditModal = true
+      this.$nextTick(() => (
+        this.$refs.sysUserEditForm.handleUpdate(record, ids)
+      ))
+    },
+    /** 删除按钮操作 */
+    handleDelete (row) {
+      var that = this
+      const userIds = row.id || this.ids
+      const userNames = row.name || this.userNames
+      this.$confirm({
+        title: '确认删除所选中数据?',
+        content: '当前选中编号为' + userNames + '的数据',
+        onOk () {
+          return delUser(userIds)
+            .then(() => {
+              that.onSelectChange([], [])
+              that.getList()
+              that.$message.success(
+                '删除成功',
+                3
+              )
+            })
+        },
+        onCancel () {}
+      })
+    },
   }
 }
 </script>

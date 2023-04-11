@@ -12,6 +12,14 @@ export default {
       type: Array,
       required: true
     },
+    sexOptions: {
+      type: Array,
+      required: true
+    },
+    userTypeOptions: {
+      type: Array,
+      required: true
+    },
     defalutExpandedKeys: {
       type: Array
     }
@@ -111,8 +119,8 @@ export default {
       this.open = true
       this.formTitle = '新增用户'
       getUser().then(response => {
-        this.postOptions = response.posts
-        this.roleOptions = response.roles
+        // this.postOptions = response.posts
+        // this.roleOptions = response.roles
         this.form.deptId = this.deptCheckedValue
       })
     },
