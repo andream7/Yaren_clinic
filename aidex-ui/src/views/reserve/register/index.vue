@@ -1,59 +1,68 @@
 <template>
   <div class="contains1">
-    <div class="header1">
-      <a-row :gutter="8">
-        <a-col
-          :span="8"
-        >
-          <a-radio-group name="radioGroup" v-model:value="rstatus" class="q2">
-            <a-radio :value="1">全部</a-radio>
-            <a-radio :value="2">未开始</a-radio>
-            <a-radio :value="3">失约</a-radio>
-            <a-radio :value="4">取消</a-radio>
-            <a-radio :value="5">已完成</a-radio>
-          </a-radio-group>
-        </a-col>
-        <a-col
-          :span="8"
-        >
-          <label class="q3">选择日期：</label>
-          <a-range-picker v-model:value="dateRange" class="q4"/>
-        </a-col>
-        <a-col
-          :span="8"
-        >
-          <a-input-group compact>
-            <a-select v-model:value="selectType">
-              <a-select-option value="doctorName">
-                医生
-              </a-select-option>
-              <a-select-option value="patientName">
-                患者
-              </a-select-option>
-              <a-select-option value="clinicName">
-                诊室
-              </a-select-option>
-            </a-select>
-            <a-input style="width: 50%" placeholder="可输入查询内容" v-model="selectInputValue" class="q5"/>
-          </a-input-group>
-        </a-col>
-      </a-row>
-      <a-row>
-        <a-col :span="24" :style="{ textAlign: 'right' }">
-          <a-button type="primary" @click="handleSummit" class="q6">
-            查询
-          </a-button>
-          <a-button @click="handleReset" class="q7">
-            重置
-          </a-button>
-        </a-col>
-      </a-row>
-    </div>
+    <a-card :bordered="false" style="margin-bottom: 10px;">
+      <div class="table-page-search-wrapper">
+        <a-form :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-row justify="space-between" :gutter="56">
+<!--            <a-col :md="6" :sm="24">-->
+<!--              <a-radio-group name="radioGroup" v-model:value="rstatus" class="q2">-->
+<!--                <a-radio :value="1">全部</a-radio>-->
+<!--                <a-radio :value="2">未开始</a-radio>-->
+<!--                <a-radio :value="3">失约</a-radio>-->
+<!--                <a-radio :value="4">取消</a-radio>-->
+<!--                <a-radio :value="5">已完成</a-radio>-->
+<!--              </a-radio-group>-->
+<!--            </a-col>-->
+            <a-col :span="8">
+              <a-form-item label="选择日期" style="text-align: left">
+                <a-range-picker v-model:value="dateRange"/>
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item label="关键字查找" style="text-align: left">
+                <a-input-group compact>
+                  <a-select v-model:value="selectType">
+                    <a-select-option value="doctorName">
+                      医生
+                    </a-select-option>
+                    <a-select-option value="patientName">
+                      患者
+                    </a-select-option>
+                    <a-select-option value="clinicName">
+                      诊室
+                    </a-select-option>
+                  </a-select>
+                  <a-input style="width: 60%" placeholder="输入关键字" v-model="selectInputValue" class="q5"/>
+                </a-input-group>
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <span class="table-page-search-submitButtons" style="float: right;">
+                 <a-button type="primary" @click="handleSummit" class="q6"><a-icon type="search"/>查询</a-button>
+                 <a-button @click="handleReset" class="q7"><a-icon type="redo"/>重置</a-button>
+              </span>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :span="12">
+              <a-radio-group name="radioGroup" v-model:value="rstatus" class="q2">
+                <a-radio :value="1">全部</a-radio>
+                <a-radio :value="2">未开始</a-radio>
+                <a-radio :value="3">失约</a-radio>
+                <a-radio :value="4">取消</a-radio>
+                <a-radio :value="5">已完成</a-radio>
+              </a-radio-group>
+            </a-col>
+          </a-row>
+        </a-form>
+      </div>
+    </a-card>
 
-    <br/>
-    <a-table :dataSource="tableData" :columns="columns" bordered :row-key="record => record.name" class="q8">
-      <a slot="ope" slot-scope="text, record" @click="showModal(record)" style="color: #7cb305">🔎详情</a>
-    </a-table>
+    <a-card :bordered="false" class="table-card">
+      <a-table :dataSource="tableData" :columns="columns" bordered :row-key="record => record.name" class="q8">
+        <a slot="ope" slot-scope="text, record" @click="showModal(record)" style="color: #7cb305">🔎详情</a>
+      </a-table>
+    </a-card>
 
     <a-modal
       width="1000px"
@@ -79,6 +88,8 @@ export default {
   components: {Detail},
   data() {
     return {
+      labelCol: { span: 6},
+      wrapperCol: { span: 18},
       selectInputValue: "",
       detailInfo: {},
       dateRange: null,
@@ -201,5 +212,7 @@ export default {
 </script>
 
 <style scoped>
+.ant-form-item-label{
 
+}
 </style>

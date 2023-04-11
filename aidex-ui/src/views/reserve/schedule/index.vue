@@ -1,7 +1,6 @@
 <template>
   <div>
-    <label>-</label>
-    <a-radio-group :default-value="0" button-style="solid" v-model="offsetWeek" @change="changeWeek">
+    <a-radio-group :default-value="0" button-style="solid" v-model="offsetWeek" @change="changeWeek" class="rg">
       <a-radio-button :value="-1">
         上一周
       </a-radio-button>
@@ -300,5 +299,8 @@ export default {
 <style scoped>
 .ant-table-striped :deep(.table-striped) td {
   background-color: #fafafa;
+}
+.rg{
+  margin-left: 10px;
 }
 </style>
