@@ -1,6 +1,6 @@
 <template>
   <div class="contains1">
-    <a-card :bordered="false" style="margin-bottom: 10px;">
+    <a-card :bordered="false">
       <div class="table-page-search-wrapper">
         <a-form :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-row justify="space-between" :gutter="56">
@@ -45,7 +45,7 @@
           </a-row>
           <a-row :gutter="24">
             <a-col :span="12">
-              <a-radio-group name="radioGroup" v-model:value="rstatus" class="q2">
+              <a-radio-group name="radioGroup" v-model:value="rstatus" style="margin-bottom: 10px;">
                 <a-radio :value="1">全部</a-radio>
                 <a-radio :value="2">未开始</a-radio>
                 <a-radio :value="3">失约</a-radio>
