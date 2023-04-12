@@ -18,7 +18,7 @@
                 <a-range-picker v-model:value="dateRange"/>
               </a-form-item>
             </a-col>
-            <a-col :span="8">
+            <a-col :span="12">
               <a-form-item label="关键字查找" style="text-align: left">
                 <a-input-group compact>
                   <a-select v-model:value="selectType">
@@ -36,7 +36,7 @@
                 </a-input-group>
               </a-form-item>
             </a-col>
-            <a-col :span="8">
+            <a-col :span="4">
               <span class="table-page-search-submitButtons" style="float: right;">
                  <a-button type="primary" @click="handleSummit" class="q6"><a-icon type="search"/>查询</a-button>
                  <a-button @click="handleReset" class="q7"><a-icon type="redo"/>重置</a-button>
